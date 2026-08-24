@@ -25,7 +25,6 @@
         },
         "frameworks": {
           "net10.0": {
-            "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {}
           }
@@ -44,7 +43,6 @@
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
             "Microsoft.Data.SqlClient": {
@@ -101,23 +99,7 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[10.0.11, 10.0.11]"
-            },
-            {
               "name": "Microsoft.NETCore.App.Crossgen2.linux-x64",
-              "version": "[10.0.11, 10.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[10.0.11, 10.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.NativeAOT.win-x64",
-              "version": "[10.0.11, 10.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.win-x64",
               "version": "[10.0.11, 10.0.11]"
             },
             {
@@ -406,18 +388,13 @@
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
         }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
-        }
       }
     },
     "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj": {
       "version": "0.1.0-beta",
       "restore": {
         "projectUniqueName": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
-        "projectName": "SampleMcpServer",
+        "projectName": "SefimSaleMcpServer",
         "projectPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
         "packagesPath": "/home/yasin/.nuget/packages/",
         "outputPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/obj/",
@@ -434,7 +411,6 @@
         },
         "frameworks": {
           "net10.0": {
-            "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
               "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/SERVICES/SqlService/SqlService.csproj": {
@@ -457,9 +433,14 @@
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.DotNet.ILCompiler": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.11, )",
+              "autoReferenced": true
+            },
             "Microsoft.Extensions.Hosting": {
               "target": "Package",
               "version": "[10.0.11, )"
@@ -472,7 +453,7 @@
             },
             "ModelContextProtocol": {
               "target": "Package",
-              "version": "[1.2.0, )"
+              "version": "[2.2.0, )"
             }
           },
           "imports": [
@@ -509,6 +490,10 @@
             },
             {
               "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.11, 10.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Crossgen2.linux-x64",
               "version": "[10.0.11, 10.0.11]"
             },
             {
@@ -557,6 +542,10 @@
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.11, 10.0.11]"
+            },
+            {
+              "name": "runtime.linux-x64.Microsoft.DotNet.ILCompiler",
               "version": "[10.0.11, 10.0.11]"
             }
           ],

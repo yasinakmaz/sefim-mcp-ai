@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SefimMcp.Models;
+
+public partial class BillHeaderLog
+{
+    public int? Id { get; set; }
+
+    public int BillState { get; set; }
+
+    public int BillType { get; set; }
+
+    public int? SubBillNo { get; set; }
+
+    public int? PaymentId { get; set; }
+
+    public string? TableNumber { get; set; }
+
+    public int? Persons { get; set; }
+
+    public string Fisno { get; set; } = null!;
+
+    public string? FormalBillId { get; set; }
+
+    public string? DailyBillNumber { get; set; }
+
+    public string? TableGroupId { get; set; }
+
+    public bool Aktarildi { get; set; }
+
+    public bool? IsSynced { get; set; }
+
+    public bool? IsUpdated { get; set; }
+
+    public DateTime DeleteDate { get; set; }
+}

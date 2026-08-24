@@ -160,7 +160,13 @@
           }
         }
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -173,10 +179,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -938,12 +944,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -956,11 +962,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -1260,7 +1266,13 @@
       "Microsoft.Data.SqlClient.SNI.runtime/6.0.2": {
         "type": "package"
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -1273,10 +1285,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -2038,12 +2050,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -2056,11 +2068,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -2344,7 +2356,13 @@
       "Microsoft.Data.SqlClient.SNI.runtime/6.0.2": {
         "type": "package"
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -2357,10 +2375,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -3122,12 +3140,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -3140,11 +3158,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -3428,7 +3446,13 @@
       "Microsoft.Data.SqlClient.SNI.runtime/6.0.2": {
         "type": "package"
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -3441,10 +3465,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -4206,12 +4230,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -4224,11 +4248,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -4512,7 +4536,13 @@
       "Microsoft.Data.SqlClient.SNI.runtime/6.0.2": {
         "type": "package"
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -4525,10 +4555,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -5290,12 +5320,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -5308,11 +5338,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -5599,7 +5629,13 @@
           "runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.dll": {}
         }
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -5612,10 +5648,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -6377,12 +6413,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -6395,11 +6431,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -6687,7 +6723,13 @@
           "runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll": {}
         }
       },
-      "Microsoft.Extensions.AI.Abstractions/10.4.1": {
+      "Microsoft.DotNet.ILCompiler/10.0.11": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.DotNet.ILCompiler.props": {}
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/10.8.3": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -6700,10 +6742,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.5"
+          "Microsoft.Extensions.Primitives": "10.0.10"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -7465,12 +7507,12 @@
           }
         }
       },
-      "ModelContextProtocol/1.2.0": {
+      "ModelContextProtocol/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "10.0.5",
-          "ModelContextProtocol.Core": "1.2.0"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.10",
+          "Microsoft.Extensions.Hosting.Abstractions": "10.0.10",
+          "ModelContextProtocol.Core": "[2.2.0]"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.dll": {
@@ -7483,11 +7525,11 @@
           }
         }
       },
-      "ModelContextProtocol.Core/1.2.0": {
+      "ModelContextProtocol.Core/2.2.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.AI.Abstractions": "10.4.1",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5"
+          "Microsoft.Extensions.AI.Abstractions": "10.8.3",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.10"
         },
         "compile": {
           "lib/net10.0/ModelContextProtocol.Core.dll": {
@@ -7822,10 +7864,36 @@
         "runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll"
       ]
     },
-    "Microsoft.Extensions.AI.Abstractions/10.4.1": {
-      "sha512": "ZxhU/wg9BOc3ohibhLl18toPLWm96ysQoE+3OhCgrZ0TUPZd7bsUmGteeatz08yweyuPIEhtyUzEZTF+3bMWEQ==",
+    "Microsoft.DotNet.ILCompiler/10.0.11": {
+      "sha512": "lp9bkprLZBm8FH0daxOcE1bIbqgn30dUeolAv7WbP8Sw06T+juNP0JeVRU3uUl8EPpfjng1eBUUTUEr10gJYyw==",
       "type": "package",
-      "path": "microsoft.extensions.ai.abstractions/10.4.1",
+      "path": "microsoft.dotnet.ilcompiler/10.0.11",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "build/BuildFrameworkNativeObjects.proj",
+        "build/Microsoft.DotNet.ILCompiler.SingleEntry.targets",
+        "build/Microsoft.DotNet.ILCompiler.props",
+        "build/Microsoft.NETCore.Native.Publish.targets",
+        "build/Microsoft.NETCore.Native.Unix.targets",
+        "build/Microsoft.NETCore.Native.Windows.targets",
+        "build/Microsoft.NETCore.Native.targets",
+        "build/NativeAOT.natstepfilter",
+        "build/NativeAOT.natvis",
+        "build/WindowsAPIs.txt",
+        "build/findvcvarsall.bat",
+        "microsoft.dotnet.ilcompiler.10.0.11.nupkg.sha512",
+        "microsoft.dotnet.ilcompiler.nuspec",
+        "tools/netstandard/ILCompiler.Build.Tasks.deps.json",
+        "tools/netstandard/ILCompiler.Build.Tasks.dll"
+      ]
+    },
+    "Microsoft.Extensions.AI.Abstractions/10.8.3": {
+      "sha512": "K0B05oApxmviWalNHPMBBcRC7erKiDATz3ENNR/jqTR9JwIwLRefgDhj2jCRwL1aca99pXUe0qyQC73/xIuZig==",
+      "type": "package",
+      "path": "microsoft.extensions.ai.abstractions/10.8.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7841,14 +7909,14 @@
         "lib/net9.0/Microsoft.Extensions.AI.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.AI.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.AI.Abstractions.xml",
-        "microsoft.extensions.ai.abstractions.10.4.1.nupkg.sha512",
+        "microsoft.extensions.ai.abstractions.10.8.3.nupkg.sha512",
         "microsoft.extensions.ai.abstractions.nuspec"
       ]
     },
-    "Microsoft.Extensions.Caching.Abstractions/10.0.5": {
-      "sha512": "k/QDdQ94/0Shi0KfU+e12m73jfQo+3JpErTtgpZfsCIqkvdEEO0XIx6R+iTbN55rNPaNhOqNY4/sB+jZ8XxVPw==",
+    "Microsoft.Extensions.Caching.Abstractions/10.0.10": {
+      "sha512": "4ZFBNE+jzR+CrWWlhOesnmywCW7pYKT0dxyAQRdL11yJwxe4jvcAu31eorFtEkoFeCDcUTeNssgPv2yaRRptaQ==",
       "type": "package",
-      "path": "microsoft.extensions.caching.abstractions/10.0.5",
+      "path": "microsoft.extensions.caching.abstractions/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7869,7 +7937,7 @@
         "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.xml",
-        "microsoft.extensions.caching.abstractions.10.0.5.nupkg.sha512",
+        "microsoft.extensions.caching.abstractions.10.0.10.nupkg.sha512",
         "microsoft.extensions.caching.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -8997,10 +9065,10 @@
         "microsoft.sqlserver.server.nuspec"
       ]
     },
-    "ModelContextProtocol/1.2.0": {
-      "sha512": "8lHIp8EY8faMFwDL+JynpFOeFZdsEE/Kxq8XMVfaA+RmQyNWjoWyvNXNQtWzVq+lDUlHLBx0ozerByNfcrciCw==",
+    "ModelContextProtocol/2.2.0": {
+      "sha512": "4Pb9u02Nwsp0poueDsqNdyGRojFxOYpljB7zDBsq+aHL+Afou3OgxlBc3GWFVnsRMRJrUtWqDh3s6k2JgPzmrQ==",
       "type": "package",
-      "path": "modelcontextprotocol/1.2.0",
+      "path": "modelcontextprotocol/2.2.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9014,14 +9082,14 @@
         "lib/netstandard2.0/ModelContextProtocol.dll",
         "lib/netstandard2.0/ModelContextProtocol.xml",
         "logo.png",
-        "modelcontextprotocol.1.2.0.nupkg.sha512",
+        "modelcontextprotocol.2.2.0.nupkg.sha512",
         "modelcontextprotocol.nuspec"
       ]
     },
-    "ModelContextProtocol.Core/1.2.0": {
-      "sha512": "x0eQqFKtV30nWP6yVy0d/3RnAKwM14ay1CHnUNb7EpwZEXJJJqjPENYvpzwqi8+8LNMMK/g33WnnLYIf1JGMOg==",
+    "ModelContextProtocol.Core/2.2.0": {
+      "sha512": "FeBfXU6T8k+jw4afg4sfxdEX2rL/e5oKOk9ROOGztu9k47+7Bz08sdaToYt2XvMY1opNbwxYQOFMj6wH9TInhA==",
       "type": "package",
-      "path": "modelcontextprotocol.core/1.2.0",
+      "path": "modelcontextprotocol.core/2.2.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9036,7 +9104,7 @@
         "lib/netstandard2.0/ModelContextProtocol.Core.dll",
         "lib/netstandard2.0/ModelContextProtocol.Core.xml",
         "logo.png",
-        "modelcontextprotocol.core.1.2.0.nupkg.sha512",
+        "modelcontextprotocol.core.2.2.0.nupkg.sha512",
         "modelcontextprotocol.core.nuspec"
       ]
     },
@@ -9253,9 +9321,10 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "Microsoft.DotNet.ILCompiler >= 10.0.11",
       "Microsoft.Extensions.Hosting >= 10.0.11",
       "Microsoft.NET.ILLink.Tasks >= 10.0.11",
-      "ModelContextProtocol >= 1.2.0",
+      "ModelContextProtocol >= 2.2.0",
       "SqlService >= 1.0.0"
     ]
   },
@@ -9266,7 +9335,7 @@
     "version": "0.1.0-beta",
     "restore": {
       "projectUniqueName": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
-      "projectName": "SampleMcpServer",
+      "projectName": "SefimSaleMcpServer",
       "projectPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
       "packagesPath": "/home/yasin/.nuget/packages/",
       "outputPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/obj/",
@@ -9309,6 +9378,12 @@
         "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
+          "Microsoft.DotNet.ILCompiler": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[10.0.11, )",
+            "autoReferenced": true
+          },
           "Microsoft.Extensions.Hosting": {
             "target": "Package",
             "version": "[10.0.11, )"
@@ -9321,7 +9396,7 @@
           },
           "ModelContextProtocol": {
             "target": "Package",
-            "version": "[1.2.0, )"
+            "version": "[2.2.0, )"
           }
         },
         "imports": [
@@ -9358,6 +9433,10 @@
           },
           {
             "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+            "version": "[10.0.11, 10.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Crossgen2.linux-x64",
             "version": "[10.0.11, 10.0.11]"
           },
           {
@@ -9406,6 +9485,10 @@
           },
           {
             "name": "Microsoft.NETCore.App.Runtime.win-x64",
+            "version": "[10.0.11, 10.0.11]"
+          },
+          {
+            "name": "runtime.linux-x64.Microsoft.DotNet.ILCompiler",
             "version": "[10.0.11, 10.0.11]"
           }
         ],

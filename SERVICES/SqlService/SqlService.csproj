@@ -46,7 +46,6 @@
     <!-- ============================================
          6. RUNTIME AYARLARI
          ============================================ -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseAppHost>true</UseAppHost>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 
@@ -58,7 +57,7 @@
     <Version>1.0.0</Version>
     <FileVersion>1.0.0.0</FileVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <Company>YasinAI</Company>
+    <Company>YasinAkmaz</Company>
     <Product>SqlService</Product>
     <Description>High-Performance AOT-Compatible MSSQL Service DLL</Description>
     <PackageTags>mssql;sql-server;aot;trimming;performance;batch-operations</PackageTags>

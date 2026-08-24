@@ -14,6 +14,9 @@
                   <Item>
                     <option name="path" value="SERVICES/SqlService/appsettings.json" />
                   </Item>
+                  <Item>
+                    <option name="path" value="sefim-ai-mcp/appsettings.json" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>

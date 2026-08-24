@@ -12,9 +12,9 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("sefim-ai-mcp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute("An MCP server using the MCP C# SDK.")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("Sefim Sale Mcp Server Program")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff3b6296b25156fcefba2b77f6c16c6f13085d9b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9bd9badae92a0e8425c8fe286d76821c8e61cfdd")]
 [assembly: System.Reflection.AssemblyProductAttribute("sefim-ai-mcp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sefim-ai-mcp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
