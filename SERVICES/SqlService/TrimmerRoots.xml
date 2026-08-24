@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TrimmerRoots.xml - Trimming Configuration
+  AOT/Trimming Safety: Preserve critical assemblies and types
+-->
+<linker>
+  <!-- Preserve entire SqlService assembly -->
+  <assembly fullname="SqlService" preserve="all" />
+
+  <!-- Preserve SQL Client types -->
+  <assembly fullname="Microsoft.Data.SqlClient">
+    <type fullname="Microsoft.Data.SqlClient.SqlConnection" preserve="all" />
+    <type fullname="Microsoft.Data.SqlClient.SqlCommand" preserve="all" />
+    <type fullname="Microsoft.Data.SqlClient.SqlDataReader" preserve="all" />
+    <type fullname="Microsoft.Data.SqlClient.SqlParameter" preserve="all" />
+    <type fullname="Microsoft.Data.SqlClient.SqlBulkCopy" preserve="all" />
+  </assembly>
+
+  <!-- Preserve System.Data types -->
+  <assembly fullname="System.Data.Common">
+    <type fullname="System.Data.DataTable" preserve="all" />
+    <type fullname="System.Data.DataColumn" preserve="all" />
+    <type fullname="System.Data.DataRow" preserve="all" />
+  </assembly>
+
+  <!-- Preserve Configuration types -->
+  <assembly fullname="Microsoft.Extensions.Configuration.Binder">
+    <type fullname="Microsoft.Extensions.Configuration.ConfigurationBinder" preserve="all" />
+  </assembly>
+</linker>

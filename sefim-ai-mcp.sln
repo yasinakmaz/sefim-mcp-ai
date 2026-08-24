@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sefim-ai-mcp", "sefim-ai-mcp\sefim-ai-mcp.csproj", "{9A49EF68-53BB-4123-9B9D-E4708FD0278D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MCP", "MCP", "{735C253F-0FEE-4745-839E-89B539B8A51D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SERVICES", "SERVICES", "{4FF3E8D9-2DB3-4B2B-97AD-DB4B4CD00751}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SHARED", "SHARED", "{D5CF96BD-4F1F-418D-A428-440DED558E1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlService", "SERVICES\SqlService\SqlService.csproj", "{D1E038E7-BE3B-4B52-BA3F-ABB19470BBE1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A49EF68-53BB-4123-9B9D-E4708FD0278D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A49EF68-53BB-4123-9B9D-E4708FD0278D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A49EF68-53BB-4123-9B9D-E4708FD0278D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A49EF68-53BB-4123-9B9D-E4708FD0278D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E038E7-BE3B-4B52-BA3F-ABB19470BBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E038E7-BE3B-4B52-BA3F-ABB19470BBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E038E7-BE3B-4B52-BA3F-ABB19470BBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E038E7-BE3B-4B52-BA3F-ABB19470BBE1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9A49EF68-53BB-4123-9B9D-E4708FD0278D} = {735C253F-0FEE-4745-839E-89B539B8A51D}
+		{D1E038E7-BE3B-4B52-BA3F-ABB19470BBE1} = {4FF3E8D9-2DB3-4B2B-97AD-DB4B4CD00751}
+	EndGlobalSection
+EndGlobal

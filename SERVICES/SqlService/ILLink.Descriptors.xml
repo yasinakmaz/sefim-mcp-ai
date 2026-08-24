@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ILLink.Descriptors.xml - IL Linker Configuration
+  AOT/Trimming Safety: Runtime-accessed types preservation
+-->
+<linker>
+  <!-- SqlService Core Types -->
+  <assembly fullname="SqlService">
+    <!-- Preserve all attribute types (runtime reflection) -->
+    <type fullname="SqlService.Core.Attributes.TableAttribute" preserve="all" />
+    <type fullname="SqlService.Core.Attributes.ColumnAttribute" preserve="all" />
+    <type fullname="SqlService.Core.Attributes.PrimaryKeyAttribute" preserve="all" />
+    <type fullname="SqlService.Core.Attributes.IgnoreAttribute" preserve="all" />
+
+    <!-- Preserve metadata types -->
+    <type fullname="SqlService.Infrastructure.Mappers.EntityMetadata`1" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Mappers.TableMetadata" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Mappers.PropertyMetadata" preserve="all" />
+
+    <!-- Preserve mapper types -->
+    <type fullname="SqlService.Infrastructure.Mappers.EntityMapper" preserve="all" />
+
+    <!-- Preserve service types -->
+    <type fullname="SqlService.Infrastructure.Services.SqlService`1" preserve="all" />
+
+    <!-- Preserve builder types -->
+    <type fullname="SqlService.Infrastructure.Builders.SqlCommandBuilder" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Builders.BatchOperationBuilder" preserve="all" />
+
+    <!-- Preserve factory types -->
+    <type fullname="SqlService.Infrastructure.Factories.SqlConnectionFactory" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Factories.SqlCommandFactory" preserve="all" />
+
+    <!-- Preserve extension methods -->
+    <type fullname="SqlService.Infrastructure.Extensions.ServiceCollectionExtensions" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Extensions.SqlDataReaderExtensions" preserve="all" />
+
+    <!-- Preserve utility classes (performance optimization tools) -->
+    <type fullname="SqlService.Infrastructure.Utilities.SqlCommandCache" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Utilities.DataTablePool" preserve="all" />
+    <type fullname="SqlService.Infrastructure.Utilities.CacheStatistics" preserve="all" />
+  </assembly>
+
+  <!-- Expression Trees Support -->
+  <assembly fullname="System.Linq.Expressions">
+    <type fullname="System.Linq.Expressions.Expression" preserve="all" />
+    <type fullname="System.Linq.Expressions.Expression`1" preserve="all" />
+    <type fullname="System.Linq.Expressions.ParameterExpression" preserve="all" />
+    <type fullname="System.Linq.Expressions.MemberExpression" preserve="all" />
+    <type fullname="System.Linq.Expressions.UnaryExpression" preserve="all" />
+    <type fullname="System.Linq.Expressions.BinaryExpression" preserve="all" />
+  </assembly>
+</linker>
