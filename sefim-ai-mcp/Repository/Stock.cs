@@ -46,6 +46,37 @@ public class Stock (
         var result = await optionCatService.InsertAndGetIdAsync<int>(optionCat, cancellationToken);
         return result.HasValue ? result.Value : 0;
     }
+
+    [McpServerTool]
+    [Description("Pulls Certain Columns Of The Main Product Header Information On 'Şefim' As A List. The Search Parameter Uses The Advanced Search Feature That Assumes Fields Such As Product Name, Product Group, Product Code, Price And VAT.")]
+    public async ValueTask<List<Product>> ListProduct(string search, CancellationToken cancellationToken = default)
+    {
+        string restorizesearch = $"%{search}%";
+
+        var parameters = new Dictionary<string, object?>()
+        {
+            ["search"] = restorizesearch
+        };
+
+        var result = await productService.ExecuteRawQueryAsync(Querys.ProductListQuery, parameters, cancellationToken);
+
+        return result.ToList();
+    }
+
+    [McpServerTool]
+    public async ValueTask<List<Choice1>> ListChoice(int ProductId, CancellationToken cancellationToken = default)
+    {
+        var parameters = new Dictionary<string, object?>()
+        {
+            ["ProductId"] = ProductId
+        };
+
+        const string wherequery = "ProductId = @ProductId";
+
+        var result = await choiceService.GetWhereAsync(wherequery, parameters, cancellationToken);
+        
+        return result.ToList();
+    }
     
     
 }

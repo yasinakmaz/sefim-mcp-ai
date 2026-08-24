@@ -11,4 +11,8 @@ public interface IStock
     public ValueTask<int> AddOption(Option option, CancellationToken cancellationToken = default);
     
     public ValueTask<int> AddOptionCat(OptionCat optionCat, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<Product>> ListProduct(string search, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<Choice1>> ListChoice(int ProductId, CancellationToken cancellationToken = default);
 }
