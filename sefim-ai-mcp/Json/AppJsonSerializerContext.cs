@@ -1,5 +1,3 @@
-using SefimMcp.Models;
-
 namespace SefimMcp.Json;
 
 [JsonSourceGenerationOptions(

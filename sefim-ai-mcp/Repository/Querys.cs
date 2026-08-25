@@ -7,4 +7,11 @@ public static class Querys
             WHERE ProductName LIKE @search OR ProductGroup LIKE @search OR 
             ProductCode LIKE @search OR Price LIKE @search OR VatRate LIKE @search 
             ";
+
+    public static string CustomerListQuery =
+        $@"
+        SELECT Id, CustomerName, FullName, CustomerCode, Adi, Soyadi, Eposta, TaxOffice, TaxNumber, Address1, Address2, Category, PhoneNumber, DiscountRate, Passive, CreditAllowance, CardNo, Aktarildi, IsSynced, IsUpdated FROM dbo.Customer
+        WHERE CustomerName LIKE @Search OR FullName LIKE @Search OR CustomerCode LIKE @Search OR Adi LIKE @Search OR Soyadi LIKE @Search OR Eposta LIKE @Search OR TaxOffice LIKE @Search OR TaxNumber LIKE @Search OR
+        Address1 LIKE @Search OR Address2 LIKE @Search OR Category LIKE @Search OR PhoneNumber LIKE @Search OR CardNo LIKE @Search OR
+          ";
 }

@@ -23,7 +23,7 @@
         <PublishTrimmed>true</PublishTrimmed>
         <TrimMode>full</TrimMode>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-        <SelfContained>false</SelfContained>
+        <SelfContained>true</SelfContained>
         <PublishReadyToRun>true</PublishReadyToRun>
         <TieredCompilation>true</TieredCompilation>
         <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
@@ -53,7 +53,6 @@
         <Compile Remove="Models\SefimmContext.cs" />
         <None Include="Models\SefimmContext.cs" />
         <Folder Include="Models\" />
-        <Folder Include="Tools\" />
     </ItemGroup>
     
     <ItemGroup>
@@ -69,6 +68,7 @@
         <Using Include="SqlService.Infrastructure.Extensions" />
         <Using Include="SqlService.Infrastructure.Services" />
         <Using Include="SqlService.Core.Attributes" />
+        <Using Include="SqlService.Core.Interfaces"/>
         
         <Using Include="SefimMcp.Models" />
         <Using Include="SefimMcp.Interfaces" />

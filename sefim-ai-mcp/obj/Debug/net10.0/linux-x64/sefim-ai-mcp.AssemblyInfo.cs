@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("sefim-ai-mcp")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("YasinAkmaz")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Sefim Sale Mcp Server Program")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9bd9badae92a0e8425c8fe286d76821c8e61cfdd")]
-[assembly: System.Reflection.AssemblyProductAttribute("sefim-ai-mcp")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d0ad81ecdcf7d242b5267468d60bd9fff08b4b6")]
+[assembly: System.Reflection.AssemblyProductAttribute("SefimSaleMcpServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sefim-ai-mcp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 

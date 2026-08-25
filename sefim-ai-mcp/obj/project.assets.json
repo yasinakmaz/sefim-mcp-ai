@@ -7865,7 +7865,7 @@
       ]
     },
     "Microsoft.DotNet.ILCompiler/10.0.11": {
-      "sha512": "qJHEcrcan3G1yHwvihx0x1zvfn2nuUJG02JYMP+RoPumd9UmoCuTJ4I/hKtDW4D+hJ8spCiMy+sek+QSy/Alkg==",
+      "sha512": "lp9bkprLZBm8FH0daxOcE1bIbqgn30dUeolAv7WbP8Sw06T+juNP0JeVRU3uUl8EPpfjng1eBUUTUEr10gJYyw==",
       "type": "package",
       "path": "microsoft.dotnet.ilcompiler/10.0.11",
       "hasTools": true,
@@ -9015,7 +9015,7 @@
       ]
     },
     "Microsoft.NET.ILLink.Tasks/10.0.11": {
-      "sha512": "UUJ1mIT3dPg6sNrEVNQZBOCG4rG4PJtVkyq/MSD/6d383rz1xA2WdCA5MlQmbMBKyt9TDCs4YmT/MmrcOJPrGQ==",
+      "sha512": "bEnPBGsz6qHB6RDQ9f7TGLK35IUVi/DwRyVKmwFpwt3yM4aew3+1lRIT2aFb4vGNdCGrYVM4Z0fkAphI0Hm/HQ==",
       "type": "package",
       "path": "microsoft.net.illink.tasks/10.0.11",
       "hasTools": true,
@@ -9329,34 +9329,33 @@
     ]
   },
   "packageFolders": {
-    "/home/yasinakmaz/.nuget/packages/": {}
+    "/home/yasin/.nuget/packages/": {}
   },
   "project": {
     "version": "0.1.0-beta",
     "restore": {
-      "projectUniqueName": "/home/yasinakmaz/RiderProjects/sefim-mcp-ai/sefim-ai-mcp/sefim-ai-mcp.csproj",
-      "projectName": "SefimSaleMcpServer",
-      "projectPath": "/home/yasinakmaz/RiderProjects/sefim-mcp-ai/sefim-ai-mcp/sefim-ai-mcp.csproj",
-      "packagesPath": "/home/yasinakmaz/.nuget/packages/",
-      "outputPath": "/home/yasinakmaz/RiderProjects/sefim-mcp-ai/sefim-ai-mcp/obj/",
+      "projectUniqueName": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
+      "projectName": "SefimSaleMcpServer.linux-x64",
+      "projectPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
+      "packagesPath": "/home/yasin/.nuget/packages/",
+      "outputPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/yasinakmaz/.nuget/NuGet/NuGet.Config"
+        "/home/yasin/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib64/dotnet/library-packs": {},
+        "/usr/lib/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/yasinakmaz/RiderProjects/sefim-mcp-ai/SERVICES/SqlService/SqlService.csproj": {
-              "projectPath": "/home/yasinakmaz/RiderProjects/sefim-mcp-ai/SERVICES/SqlService/SqlService.csproj"
+            "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/SERVICES/SqlService/SqlService.csproj": {
+              "projectPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/SERVICES/SqlService/SqlService.csproj"
             }
           }
         }
@@ -9375,7 +9374,6 @@
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Microsoft.DotNet.ILCompiler": {
@@ -9476,6 +9474,10 @@
             "version": "[10.0.11, 10.0.11]"
           },
           {
+            "name": "Microsoft.NETCore.App.Runtime.NativeAOT.linux-x64",
+            "version": "[10.0.11, 10.0.11]"
+          },
+          {
             "name": "Microsoft.NETCore.App.Runtime.osx-arm64",
             "version": "[10.0.11, 10.0.11]"
           },
@@ -9497,7 +9499,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/10.0.111/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.111/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
