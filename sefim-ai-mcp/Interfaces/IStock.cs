@@ -88,4 +88,31 @@ public interface IStock
     public ValueTask<bool> UpdateOptionCat(OptionCat optionCat, CancellationToken cancellationToken = default);
     
     public ValueTask<int> BatchUpdateOptionCat(List<OptionCat> optionCats, CancellationToken cancellationToken = default);
+    
+    // Weighing Product
+    public ValueTask<int> AddWeighingProduct(WeighingProduct weighingProduct, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchInsertWeighingProduct(List<WeighingProduct> weighingProduct, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<WeighingProduct>> ListWeighingProduct(CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<WeighingProduct>> GetWeighingProduct(string productname, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> DeleteWeighingProduct(int id, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchDeleteWeighingProduct(List<int> id, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> UpdateWeighingProduct(WeighingProduct weighingProduct, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchUpdateWeighingProduct(List<WeighingProduct> weighingProducts, CancellationToken cancellationToken = default);
+    
+    // Product Image
+    public ValueTask<Content.McpToolResponse> GetImage(int productid);
+
+    public ValueTask<Content.McpToolResponse> SaveImage(
+        int productid,
+        string? imageUrl = null,
+        string? imageBase64 = null,
+        string? svgContent = null);
+    
 }

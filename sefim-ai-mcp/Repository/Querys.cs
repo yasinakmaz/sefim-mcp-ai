@@ -14,4 +14,27 @@ public static class Querys
         WHERE CustomerName LIKE @Search OR FullName LIKE @Search OR CustomerCode LIKE @Search OR Adi LIKE @Search OR Soyadi LIKE @Search OR Eposta LIKE @Search OR TaxOffice LIKE @Search OR TaxNumber LIKE @Search OR
         Address1 LIKE @Search OR Address2 LIKE @Search OR Category LIKE @Search OR PhoneNumber LIKE @Search OR CardNo LIKE @Search OR
           ";
+    
+    public static string SoftDeleteCustomerQuery =
+        $@"
+        UPDATE dbo.Customer
+        SET Passive = 1
+        WHERE Id = @P1
+          ";
+    
+    public static string ListUserQuery =
+        $@"
+        SELECT Id, UserName, [Password], [Role] FROM dbo.[User] WHERE UserName LIKE @Search OR [Role] LIKE @Search
+          ";
+    
+    public static string ListUserProductQuery =
+        $@"
+        SELECT Id, UserName, ProductId FROM dbo.[UserProducts] WHERE UserName LIKE @Search
+          ";
+    
+    public static string ListPermissionQuery =
+        $@"
+        SELECT Id, UserName, PermissionName, PermissionValue, Aktarildi, IsSynced, IsUpdated FROM [dbo].[Permission]
+        WHERE UserName LIKE @Search OR PermissionName LIKE @Search
+          ";
 }

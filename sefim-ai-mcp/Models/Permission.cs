@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace SefimMcp.Models;
 
-public partial class Permission
+public class Permission
 {
+    [PrimaryKey (IsIdentity = true)]
     public string UserName { get; set; } = null!;
 
     public string PermissionName { get; set; } = null!;

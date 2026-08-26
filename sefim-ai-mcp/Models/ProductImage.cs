@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace SefimMcp.Models;
 
-public partial class ProductImage
+public class ProductImage
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public int? ProductId { get; set; }
-
-    public byte[]? PrdImage { get; set; }
 
     public string? Calory { get; set; }
 

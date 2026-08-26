@@ -8,6 +8,8 @@ public interface ICustomer
     
     public ValueTask<bool> DeleteCustomer(int customerId, CancellationToken cancellationToken = default);
     
+    public ValueTask<bool> SoftDeleteCustomer(int customerId, CancellationToken cancellationToken = default);
+    
     public ValueTask<int> BatchDeleteCustomer(List<Customer> customers, CancellationToken cancellationToken = default);
     
     public ValueTask<bool> UpdateCustomer(Customer customer, CancellationToken cancellationToken = default);

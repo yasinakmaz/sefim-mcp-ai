@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Sefim Sale Mcp Server Program")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d0ad81ecdcf7d242b5267468d60bd9fff08b4b6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+088bf90f2f6e8ff5603af2a3690103696b0ac6b0")]
 [assembly: System.Reflection.AssemblyProductAttribute("SefimSaleMcpServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sefim-ai-mcp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

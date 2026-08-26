@@ -52,7 +52,6 @@
     <ItemGroup>
         <Compile Remove="Models\SefimmContext.cs" />
         <None Include="Models\SefimmContext.cs" />
-        <Folder Include="Models\" />
     </ItemGroup>
     
     <ItemGroup>
@@ -61,6 +60,7 @@
         <Using Include="Microsoft.Extensions.Logging" />
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.Configuration" />
         
         <Using Include="System.ComponentModel" />
         <Using Include="System.Text.Json.Serialization" />
@@ -71,8 +71,10 @@
         <Using Include="SqlService.Core.Interfaces"/>
         
         <Using Include="SefimMcp.Models" />
+        <Using Include="SefimMcp.Models.system" />
         <Using Include="SefimMcp.Interfaces" />
         <Using Include="SefimMcp.Repository" />
+        <Using Include="SefimMcp.Helper" />
     </ItemGroup>
     
     <ItemGroup>

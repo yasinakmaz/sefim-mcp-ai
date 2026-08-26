@@ -3,6 +3,8 @@ namespace SefimMcp.Json;
 [JsonSourceGenerationOptions(
     GenerationMode = JsonSourceGenerationMode.Metadata,
     PropertyNameCaseInsensitive = true)]
+[JsonSerializable(typeof(Content.McpToolResponse))]
+[JsonSerializable(typeof(Content.McpContent[]))]
 [JsonSerializable(typeof(Dictionary<string, object>))]
 [JsonSerializable(typeof(List<object>))]
 [JsonSerializable(typeof(List<int>))]

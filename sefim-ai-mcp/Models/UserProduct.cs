@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace SefimMcp.Models;
 
-public partial class UserProduct
+public class UserProduct
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? UserName { get; set; }
