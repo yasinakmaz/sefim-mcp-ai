@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class EfaturaDurumKodlari
+public class EfaturaDurumKodlari
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public int? Kod { get; set; }

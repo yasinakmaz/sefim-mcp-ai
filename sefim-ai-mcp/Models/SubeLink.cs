@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class SubeLink
+public class SubeLink
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string SubeAdi { get; set; } = null!;

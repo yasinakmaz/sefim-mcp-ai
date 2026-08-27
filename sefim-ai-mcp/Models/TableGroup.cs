@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class TableGroup
+public class TableGroup
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? Name { get; set; }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class ReservationList
+public class ReservationList
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? ReservationName { get; set; }

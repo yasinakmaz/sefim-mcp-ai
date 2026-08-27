@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pNQQj/wsWQ8=",
+  "dgSpecHash": "5uiJt/eWAFQ=",
   "success": true,
   "projectFilePath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
   "expectedPackageFiles": [
@@ -75,10 +75,10 @@
     "/home/yasin/.nuget/packages/microsoft.netcore.app.crossgen2.linux-x64/10.0.11/microsoft.netcore.app.crossgen2.linux-x64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/microsoft.netcore.app.runtime.nativeaot.linux-x64/10.0.11/microsoft.netcore.app.runtime.nativeaot.linux-x64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.11/runtime.linux-x64.microsoft.dotnet.ilcompiler.10.0.11.nupkg.sha512",
+    "/home/yasin/.nuget/packages/microsoft.netcore.app.host.linux-x64/10.0.11/microsoft.netcore.app.host.linux-x64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/microsoft.netcore.app.host.win-x64/10.0.11/microsoft.netcore.app.host.win-x64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/microsoft.netcore.app.host.win-arm64/10.0.11/microsoft.netcore.app.host.win-arm64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/microsoft.netcore.app.host.osx-arm64/10.0.11/microsoft.netcore.app.host.osx-arm64.10.0.11.nupkg.sha512",
-    "/home/yasin/.nuget/packages/microsoft.netcore.app.host.linux-x64/10.0.11/microsoft.netcore.app.host.linux-x64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/microsoft.netcore.app.host.linux-arm64/10.0.11/microsoft.netcore.app.host.linux-arm64.10.0.11.nupkg.sha512",
     "/home/yasin/.nuget/packages/microsoft.netcore.app.host.linux-musl-x64/10.0.11/microsoft.netcore.app.host.linux-musl-x64.10.0.11.nupkg.sha512"
   ],

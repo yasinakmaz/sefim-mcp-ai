@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class Shift
+public class Shift
 {
     public DateTime Starts { get; set; }
 
@@ -11,6 +8,7 @@ public partial class Shift
 
     public bool Aktarildi { get; set; }
 
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public bool? IsSynced { get; set; }

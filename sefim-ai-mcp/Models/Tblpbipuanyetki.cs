@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class Tblpbipuanyetki
+public class Tblpbipuanyetki
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public decimal? Userno { get; set; }

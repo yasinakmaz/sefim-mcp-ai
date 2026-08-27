@@ -115,4 +115,39 @@ public interface IStock
         string? imageBase64 = null,
         string? svgContent = null);
     
+    // Menu
+    public ValueTask<int> AddMenu(Menu menu, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchInsertMenu(List<Menu> menus, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> UpdateMenu(Menu menu, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchUpdateMenu(List<Menu> menus, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> DeleteMenu(int menuid, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchDeleteMenu(List<int> menuids, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<Menu>> ListMenu(string search, CancellationToken cancellationToken = default);
+    
+    public ValueTask<Menu> GetMenu(int menuid, CancellationToken cancellationToken = default);
+    
+    // MenuProduct
+    public ValueTask<int> AddMenuProduct(MenuProduct menuProduct, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchInsertMenuProduct(List<MenuProduct> menuProducts, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> UpdateMenuProduct(MenuProduct menuProduct, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchUpdateMenuProduct(List<MenuProduct> menuProducts, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> DeleteMenuProduct(int menuProductid, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BatchDeleteMenuProduct(List<int> menuProductids, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<MenuProduct>> ListMenuProduct(string search, CancellationToken cancellationToken = default);
+    
+    public ValueTask<MenuProduct> GetMenuProduct(int menuProductid, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<MenuProduct>> GetMenuProductByMenuId(int menuId, CancellationToken cancellationToken = default);
 }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class SyncTable
+public class SyncTable
 {
+    [PrimaryKey (IsIdentity = true)]
     public long Id { get; set; }
 
     public long TableId { get; set; }

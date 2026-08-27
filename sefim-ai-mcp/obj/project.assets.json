@@ -9335,7 +9335,7 @@
     "version": "0.1.0-beta",
     "restore": {
       "projectUniqueName": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
-      "projectName": "SefimSaleMcpServer.linux-x64",
+      "projectName": "SefimSaleMcpServer",
       "projectPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/sefim-ai-mcp.csproj",
       "packagesPath": "/home/yasin/.nuget/packages/",
       "outputPath": "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/sefim-ai-mcp/obj/",
@@ -9352,6 +9352,7 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
             "/run/media/yasin/F284FE9F84FE660F/YAZILIM/CONSOLE/sefim-ai-mcp/SERVICES/SqlService/SqlService.csproj": {
@@ -9374,6 +9375,7 @@
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Microsoft.DotNet.ILCompiler": {

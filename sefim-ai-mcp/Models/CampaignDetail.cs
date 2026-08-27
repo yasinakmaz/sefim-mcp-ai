@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class CampaignDetail
+public class CampaignDetail
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public int CampaignHeaderId { get; set; }

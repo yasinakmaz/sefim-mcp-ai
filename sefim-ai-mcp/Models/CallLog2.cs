@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class CallLog2
+public class CallLog2
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? Phone { get; set; }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class VerInfo
+public class VerInfo
 {
     public int? Versiyon { get; set; }
 

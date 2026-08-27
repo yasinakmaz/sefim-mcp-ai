@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class Payment
+public class Payment
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? TableNo { get; set; }

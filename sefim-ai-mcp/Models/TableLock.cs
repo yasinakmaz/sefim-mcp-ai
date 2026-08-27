@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class TableLock
+public class TableLock
 {
     public string TableNumber { get; set; } = null!;
 
@@ -13,6 +10,7 @@ public partial class TableLock
 
     public bool? IsUpdated { get; set; }
 
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? UserName { get; set; }

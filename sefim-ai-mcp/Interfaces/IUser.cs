@@ -13,7 +13,7 @@ public interface IUser
     
     public ValueTask<bool> DeleteUser(int userid, CancellationToken cancellationToken = default);
     
-    public ValueTask<int> BatchDeleteUser(List<int> userids, CancellationToken cancellationToken = default);
+    public ValueTask<int> BatchDeleteUser(List<int> userIds, CancellationToken cancellationToken = default);
     
     public ValueTask<User> GetUser(int userid, CancellationToken cancellationToken = default);
     

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class MenuProduct
+public class MenuProduct
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public int MenuId { get; set; }

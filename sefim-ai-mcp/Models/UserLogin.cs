@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class UserLogin
+public class UserLogin
 {
     public string? UserName { get; set; }
 
@@ -19,6 +16,7 @@ public partial class UserLogin
 
     public bool? IsUpdated { get; set; }
 
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public bool? Aktarildi { get; set; }

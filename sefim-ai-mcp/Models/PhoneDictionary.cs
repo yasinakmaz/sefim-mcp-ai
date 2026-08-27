@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class PhoneDictionary
+public class PhoneDictionary
 {
     public string PhoneNumber { get; set; } = null!;
 
@@ -25,5 +22,6 @@ public partial class PhoneDictionary
 
     public bool? IsUpdated { get; set; }
 
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 }

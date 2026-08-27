@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class BillWithHeaderOkc
+public class BillWithHeaderOkc
 {
     public string? TableNumber { get; set; }
 

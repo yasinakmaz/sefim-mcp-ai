@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class TriggerTable
+public class TriggerTable
 {
+    [PrimaryKey (IsIdentity = true)]
     public long Id { get; set; }
 
     public string TableName { get; set; } = null!;

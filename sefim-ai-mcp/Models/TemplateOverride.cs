@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class TemplateOverride
+public class TemplateOverride
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string TemplateName { get; set; } = null!;

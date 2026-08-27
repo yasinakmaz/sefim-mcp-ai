@@ -37,4 +37,16 @@ public static class Querys
         SELECT Id, UserName, PermissionName, PermissionValue, Aktarildi, IsSynced, IsUpdated FROM [dbo].[Permission]
         WHERE UserName LIKE @Search OR PermissionName LIKE @Search
           ";
+    
+    public static string ListMenuQuery =
+        $@"
+        SELECT Id, MenuName, ChoiceCount, Price, Active, Aktarildi, IsSynced, IsUpdated FROM dbo.Menu
+        WHERE MenuName LIKE @Search
+          ";
+    
+    public static string ListMenuProductQuery =
+        $@"
+        SELECT Id, MenuId, ProductName, Price, Aktarildi, IsSynced, IsUpdated, ProductId FROM dbo.MenuProduct
+        WHERE ProductName LIKE @Search
+          ";
 }

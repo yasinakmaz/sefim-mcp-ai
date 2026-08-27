@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class Value
+public class Value
 {
     public string Name { get; set; } = null!;
 
@@ -15,5 +12,6 @@ public partial class Value
 
     public bool? IsUpdated { get; set; }
 
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 }

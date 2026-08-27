@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SefimMcp.Models;
+﻿namespace SefimMcp.Models;
 
 public class ProductImage
 {

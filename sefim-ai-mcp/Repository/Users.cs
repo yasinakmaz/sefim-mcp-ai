@@ -1,5 +1,6 @@
 namespace SefimMcp.Repository;
 
+[McpServerToolType]
 public class Users (
         ISqlService<User> userService,
         ISqlService<UserProduct> userProductService,
@@ -203,54 +204,54 @@ public class Users (
 
     [McpServerTool]
     [Description("It assigns permissions in bulk to users on the “Şefim” app.")]
-    public async ValueTask<int> BatchInsertPermission(List<Permission> Permissions, CancellationToken cancellationToken = default)
+    public async ValueTask<int> BatchInsertPermission(List<Permission> permission, CancellationToken cancellationToken = default)
     {
-        var result = await permissionService.BatchInsertAsync(Permissions, 1000, cancellationToken);
+        var result = await permissionService.BatchInsertAsync(permission, 1000, cancellationToken);
 
         return result;
     }
 
     [McpServerTool]
     [Description("Updates the permissions for the relevant user in the “Şefim” app")]
-    public async ValueTask<bool> UpdatePermission(Permission Permission, CancellationToken cancellationToken = default)
+    public async ValueTask<bool> UpdatePermission(Permission permission, CancellationToken cancellationToken = default)
     {
-        var result = await permissionService.UpdateAsync(Permission, cancellationToken);
+        var result = await permissionService.UpdateAsync(permission, cancellationToken);
         
         return result > 0;
     }
 
     [McpServerTool]
     [Description("Bulk-updates user permissions on the ‘Şefim’ app")]
-    public async ValueTask<int> BatchUpdatePermission(List<Permission> Permissions, CancellationToken cancellationToken = default)
+    public async ValueTask<int> BatchUpdatePermission(List<Permission> permission, CancellationToken cancellationToken = default)
     {
-        var result = await permissionService.BatchUpdateAsync(Permissions, 1000, cancellationToken);
+        var result = await permissionService.BatchUpdateAsync(permission, 1000, cancellationToken);
         
         return result;
     }
 
     [McpServerTool]
     [Description("Removes the relevant user permission on the ‘Şefim’ app")]
-    public async ValueTask<bool> DeletePermission(int Permissionid, CancellationToken cancellationToken = default)
+    public async ValueTask<bool> DeletePermission(int permissionid, CancellationToken cancellationToken = default)
     {
-        var result = await permissionService.DeleteAsync(Permissionid, cancellationToken);
+        var result = await permissionService.DeleteAsync(permissionid, cancellationToken);
         
         return result > 0;
     }
 
     [McpServerTool]
     [Description("Bulk-deletes user permissions on the ‘Şefim’ app")]
-    public async ValueTask<int> BatchDeletePermission(List<int> Permissionids, CancellationToken cancellationToken = default)
+    public async ValueTask<int> BatchDeletePermission(List<int> permissionids, CancellationToken cancellationToken = default)
     {
-        var result = await permissionService.BatchDeleteAsync(Permissionids.Cast<object>(), 1000, cancellationToken);
+        var result = await permissionService.BatchDeleteAsync(permissionids.Cast<object>(), 1000, cancellationToken);
         
         return result;
     }
 
     [McpServerTool]
     [Description("Retrieves user permissions on the ‘Şefim’ app individually")]
-    public async ValueTask<Permission> GetPermission(int Permissionid, CancellationToken cancellationToken = default)
+    public async ValueTask<Permission> GetPermission(int permissionid, CancellationToken cancellationToken = default)
     {
-        var result = await permissionService.GetByIdAsync(Permissionid, cancellationToken);
+        var result = await permissionService.GetByIdAsync(permissionid, cancellationToken);
         
         return result ?? new Permission();
     }

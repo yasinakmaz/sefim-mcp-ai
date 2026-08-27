@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class ProductTemplateAutomation
+public class ProductTemplateAutomation
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public DateTime DateStart { get; set; }

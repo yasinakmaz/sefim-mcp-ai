@@ -9,7 +9,9 @@ public class Stock (
         ISqlService<Option> optionService,
         ISqlService<OptionCat> optionCatService,
         ISqlService<WeighingProduct> weighingProductService,
-        ISqlService<ProductImage> productImageService
+        ISqlService<ProductImage> productImageService,
+        ISqlService<Menu> menuService,
+        ISqlService<MenuProduct> menuProductService
         ) : IStock
 {
     #region Product
@@ -708,6 +710,188 @@ public class Stock (
         }
     }
     
+    #endregion
+
+    #region Menu
+
+    [McpServerTool]
+    [Description("Creates a menu in the “Şefim” app.")]
+    public async ValueTask<int> AddMenu(Menu menu, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.InsertAndGetIdAsync<int>(menu, cancellationToken);
+
+        return result.HasValue ? result.Value : 0;
+    }
+
+    [McpServerTool]
+    [Description("It creates a group menu in the “Şefim” app.")]
+    public async ValueTask<int> BatchInsertMenu(List<Menu> menus, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.BatchInsertAsync(menus, 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("It updates the relevant menu in the “Şefim” app.")]
+    public async ValueTask<bool> UpdateMenu(Menu menu, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.UpdateAsync(menu, cancellationToken);
+
+        return result > 0;
+    }
+
+    [McpServerTool]
+    [Description("It applies bulk updates to the relevant menus in the “Şefim” app.")]
+    public async ValueTask<int> BatchUpdateMenu(List<Menu> menus, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.BatchUpdateAsync(menus, 1000, cancellationToken);
+        
+        return result;
+    }
+    
+    [McpServerTool]
+    [Description("Deletes the relevant menu in the “Şefim” app.")]
+    public async ValueTask<bool> DeleteMenu(int menuid, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.DeleteAsync(menuid, cancellationToken);
+        
+        return result > 0;
+    }
+
+    [McpServerTool]
+    [Description("Deletes the relevant menus in bulk on the “Şefim” app.")]
+    public async ValueTask<int> BatchDeleteMenu(List<int> menuids, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.BatchDeleteAsync(menuids.Cast<object>(), 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("It lists the relevant menus by filtering them in the “Şefim” app.")]
+    public async ValueTask<List<Menu>> ListMenu(string search, CancellationToken cancellationToken = default)
+    {
+        string normalizesearch = $"%{search}%";
+        
+        var parameters = new Dictionary<string, object?>()
+        {
+            ["Search"] = normalizesearch.Trim() 
+        };
+
+        var result = await menuService.ExecuteRawQueryAsync(Querys.ListMenuQuery, parameters, cancellationToken);
+
+        return result.ToList() ?? new List<Menu>();
+    }
+
+    [McpServerTool]
+    [Description("It brings up the relevant menu in the “Şefim” app.")]
+    public async ValueTask<Menu> GetMenu(int menuid, CancellationToken cancellationToken = default)
+    {
+        var result = await menuService.GetByIdAsync(menuid, cancellationToken);
+
+        return result ?? new Menu();
+    }
+
+    #endregion
+
+    #region MenuProduct
+
+    [McpServerTool]
+    [Description("Adds a single product to the relevant menu in the “Şefim” app.")]
+    public async ValueTask<int> AddMenuProduct(MenuProduct menuProduct, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.InsertAndGetIdAsync<int>(menuProduct, cancellationToken);
+
+        return result.HasValue ? result.Value : 0;
+    }
+
+    [McpServerTool]
+    [Description("Adds products in bulk to the relevant menu in the “Şefim” app.")]
+    public async ValueTask<int> BatchInsertMenuProduct(List<MenuProduct> menuProducts, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.BatchInsertAsync(menuProducts, 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("Updates the product in the relevant menu on the “Şefim” app.")]
+    public async ValueTask<bool> UpdateMenuProduct(MenuProduct menuProduct, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.UpdateAsync(menuProduct, cancellationToken);
+
+        return result > 0;
+    }
+
+    [McpServerTool]
+    [Description("It updates the relevant menu items in bulk on the “Şefim” app.")]
+    public async ValueTask<int> BatchUpdateMenuProduct(List<MenuProduct> menuProducts, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.BatchUpdateAsync(menuProducts, 1000, cancellationToken);
+        
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("Deletes the relevant menu item in the “Şefim” app.")]
+    public async ValueTask<bool> DeleteMenuProduct(int menuProductid, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.DeleteAsync(menuProductid, cancellationToken);
+        
+        return result > 0;
+    }
+
+    [McpServerTool]
+    [Description("Deletes all items from the relevant menus in the “Şefim” app in one go.")]
+    public async ValueTask<int> BatchDeleteMenuProduct(List<int> menuProductids, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.BatchDeleteAsync(menuProductids.Cast<object>(), 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("It lists menu items in the “Şefim” app.")]
+    public async ValueTask<List<MenuProduct>> ListMenuProduct(string search, CancellationToken cancellationToken = default)
+    {
+        string normalizesearch = $"%{search}%";
+        
+        var parameters = new Dictionary<string, object?>()
+        {
+            ["Search"] = normalizesearch.Trim() 
+        };
+
+        var result = await menuProductService.ExecuteRawQueryAsync(Querys.ListMenuProductQuery, parameters, cancellationToken);
+
+        return result.ToList() ?? new List<MenuProduct>();
+    }
+
+    [McpServerTool]
+    [Description("It retrieves the menu item from the “Şefim” app.")]
+    public async ValueTask<MenuProduct> GetMenuProduct(int menuProductid, CancellationToken cancellationToken = default)
+    {
+        var result = await menuProductService.GetByIdAsync(menuProductid, cancellationToken);
+
+        return result ?? new MenuProduct();
+    }
+
+    [McpServerTool]
+    [Description("Retrieves the items from a specific menu in the “Şefim” app.")]
+    public async ValueTask<List<MenuProduct>> GetMenuProductByMenuId(int menuId, CancellationToken cancellationToken = default)
+    {
+        const string whereQuery = "MenuId = @MenuId";
+
+        var parameters = new Dictionary<string, object?>()
+        {
+            ["MenuId"] = menuId
+        };
+
+        var result = await menuProductService.GetWhereAsync(whereQuery, parameters, cancellationToken);
+
+        return result.ToList() ?? new List<MenuProduct>();
+    }
+
     #endregion
 
 }

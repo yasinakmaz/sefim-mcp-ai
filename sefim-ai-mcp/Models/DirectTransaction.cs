@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class DirectTransaction
+public class DirectTransaction
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public DateTime Date { get; set; }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace SefimMcp.Models;
 
-namespace SefimMcp.Models;
-
-public partial class MaterialTransaction
+public class MaterialTransaction
 {
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public string? MaterialName { get; set; }
