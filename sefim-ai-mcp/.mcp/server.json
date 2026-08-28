@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
-  "description": "Sefim Sale Program Mcp Server",
+  "description": "Local stdio MCP integration for the Şefim point-of-sale system and local Microsoft SQL Server.",
   "name": "io.github.yasinakmaz/sefim-mcp-ai",
   "version": "0.1.0-beta",
   "packages": [

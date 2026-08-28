@@ -15,11 +15,11 @@ public interface IUser
     
     public ValueTask<int> BatchDeleteUser(List<int> userIds, CancellationToken cancellationToken = default);
     
-    public ValueTask<User> GetUser(int userid, CancellationToken cancellationToken = default);
+    public ValueTask<UserDto?> GetUser(int userid, CancellationToken cancellationToken = default);
     
-    public ValueTask<List<User>> GetUsers(CancellationToken cancellationToken = default);
+    public ValueTask<List<UserDto>> GetUsers(int limit = 100, CancellationToken cancellationToken = default);
     
-    public ValueTask<List<User>> GetFilteredUsers(string search, CancellationToken cancellationToken = default);
+    public ValueTask<List<UserDto>> GetFilteredUsers(string search, int limit = 100, CancellationToken cancellationToken = default);
     
     // User Product
     public ValueTask<int> AddUserProduct(UserProduct user, CancellationToken cancellationToken = default);

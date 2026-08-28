@@ -1,6 +1,5 @@
 namespace SefimMcp.Repository;
 
-[McpServerToolType]
 public class Transactions (
         ISqlService<DirectTransaction> directTransactionService
     ) : ITransactions

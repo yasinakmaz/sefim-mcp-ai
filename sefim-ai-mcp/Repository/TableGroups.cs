@@ -1,6 +1,5 @@
 namespace SefimMcp.Repository;
 
-[McpServerToolType]
 public class TableGroups (
         ISqlService<TableGroup> tableGroupService
     ) : ITableGroup

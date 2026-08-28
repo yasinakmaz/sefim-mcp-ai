@@ -1,6 +1,5 @@
 namespace SefimMcp.Repository;
 
-[McpServerToolType]
 public class Users (
         ISqlService<User> userService,
         ISqlService<UserProduct> userProductService,
@@ -65,25 +64,23 @@ public class Users (
 
     [McpServerTool]
     [Description("Retrieves the specific user's information from the “Şefim” app.")]
-    public async ValueTask<User> GetUser(int userid, CancellationToken cancellationToken = default)
+    public async ValueTask<UserDto?> GetUser(int userid, CancellationToken cancellationToken = default)
     {
         var result = await userService.GetByIdAsync(userid, cancellationToken);
-        
-        return result ?? new User();
+        return result is null ? null : UserDto.From(result);
     }
 
     [McpServerTool]
     [Description("Returns a list of all users on “Şefim” in a single query.")]
-    public async ValueTask<List<User>> GetUsers(CancellationToken cancellationToken = default)
+    public async ValueTask<List<UserDto>> GetUsers(int limit = 100, CancellationToken cancellationToken = default)
     {
         var result = await userService.GetAllAsync(cancellationToken);
-
-        return result.ToList() ?? new List<User>();
+        return result.Take(Math.Clamp(limit, 1, 200)).Select(UserDto.From).ToList();
     }
 
     [McpServerTool]
     [Description("It returns users from “Şefim” by filtering them (using the search parameter).")]
-    public async ValueTask<List<User>> GetFilteredUsers(string search, CancellationToken cancellationToken = default)
+    public async ValueTask<List<UserDto>> GetFilteredUsers(string search, int limit = 100, CancellationToken cancellationToken = default)
     {
         string normalizedSearch = $"%{search}%";
 
@@ -94,7 +91,7 @@ public class Users (
 
         var result = await userService.ExecuteRawQueryAsync(Querys.ListUserQuery, parameters, cancellationToken);
         
-        return result.ToList();
+        return result.Take(Math.Clamp(limit, 1, 200)).Select(UserDto.From).ToList();
     }
 
     #endregion

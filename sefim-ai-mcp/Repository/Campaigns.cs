@@ -4,7 +4,8 @@ public class Campaigns (
         ISqlService<CampaignHeader> campaignHeaderService,
         ISqlService<CampaignDetail> campaignDetailService,
         ISqlService<ProductTemplate> productTemplateService,
-        ISqlService<ProductTemplatePrice> productTemplatePriceService
+        ISqlService<ProductTemplatePrice> productTemplatePriceService,
+        ISqlService<TemplateOverride> templateOverrideService
         ) : ICampaign
 {
     #region Campaign Header
@@ -305,6 +306,81 @@ public class Campaigns (
         var result = await productTemplatePriceService.GetByIdAsync(id, cancellationToken);
 
         return result ?? new ProductTemplatePrice();
+    }
+
+    #endregion
+
+    #region Template Override
+
+    [McpServerTool]
+    [Description("Adds a template override to the “Şefim” app.")]
+    public async ValueTask<int> AddTemplateOverride(TemplateOverride templateOverride, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.InsertAndGetIdAsync<int>(templateOverride, cancellationToken);
+
+        return result.HasValue ? result.Value : 0;
+    }
+
+    [McpServerTool]
+    [Description("Adds template overrides in bulk to the “Şefim” app.")]
+    public async ValueTask<int> BulkInsertTemplateOverrides(List<TemplateOverride> templateOverrides, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.BatchInsertAsync(templateOverrides, 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("Updates the relevant template override in the “Şefim” app.")]
+    public async ValueTask<bool> UpdateTemplateOverride(TemplateOverride templateOverride, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.UpdateAsync(templateOverride, cancellationToken);
+
+        return result > 0;
+    }
+
+    [McpServerTool]
+    [Description("Bulk updates the relevant template overrides in the “Şefim” app.")]
+    public async ValueTask<int> BulkUpdateTemplateOverrides(List<TemplateOverride> templateOverrides, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.BatchUpdateAsync(templateOverrides, 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("Deletes the relevant template override in the “Şefim” app.")]
+    public async ValueTask<bool> DeleteTemplateOverride(int id, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.DeleteAsync(id, cancellationToken);
+
+        return result > 0;
+    }
+
+    [McpServerTool]
+    [Description("Deletes the relevant template overrides on the “Şefim” app in bulk.")]
+    public async ValueTask<int> BulkDeleteTemplateOverrides(List<TemplateOverride> templateOverrides, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.BatchDeleteAsync(templateOverrides, 1000, cancellationToken);
+
+        return result;
+    }
+
+    [McpServerTool]
+    [Description("Displays a list of template overrides in the “Şefim” app.")]
+    public async ValueTask<List<TemplateOverride>> GetTemplateOverrides(CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.GetAllAsync(cancellationToken);
+        
+        return result.ToList() ?? new List<TemplateOverride>();
+    }
+
+    [McpServerTool]
+    [Description("Retrieves the relevant template override from the ‘Şefim’ app.")]
+    public async ValueTask<TemplateOverride> GetTemplateOverride(int id, CancellationToken cancellationToken = default)
+    {
+        var result = await templateOverrideService.GetByIdAsync(id, cancellationToken);
+        return result ?? new TemplateOverride();
     }
 
     #endregion

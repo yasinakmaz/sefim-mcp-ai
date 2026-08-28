@@ -73,4 +73,22 @@ public interface ICampaign
     public ValueTask<List<ProductTemplatePrice>> GetProductTemplatePrices(int productTemplatePriceId, CancellationToken cancellationToken = default);
     
     public ValueTask<ProductTemplatePrice> GetProductTemplatePrice(int id, CancellationToken cancellationToken = default);
+    
+    // Template Overrides
+    
+    public ValueTask<int> AddTemplateOverride(TemplateOverride templateOverride, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BulkInsertTemplateOverrides(List<TemplateOverride> templateOverrides, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> UpdateTemplateOverride(TemplateOverride templateOverride, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BulkUpdateTemplateOverrides(List<TemplateOverride> templateOverrides, CancellationToken cancellationToken = default);
+    
+    public ValueTask<bool> DeleteTemplateOverride(int id, CancellationToken cancellationToken = default);
+    
+    public ValueTask<int> BulkDeleteTemplateOverrides(List<TemplateOverride> templateOverrides, CancellationToken cancellationToken = default);
+    
+    public ValueTask<List<TemplateOverride>> GetTemplateOverrides(CancellationToken cancellationToken = default);
+    
+    public ValueTask<TemplateOverride> GetTemplateOverride(int id, CancellationToken cancellationToken = default);
 }

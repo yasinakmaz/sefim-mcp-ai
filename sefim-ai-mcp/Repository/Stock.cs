@@ -1,6 +1,5 @@
 namespace SefimMcp.Repository;
 
-[McpServerToolType]
 public class Stock (
         IConfiguration configuration,
         ISqlService<Product> productService,

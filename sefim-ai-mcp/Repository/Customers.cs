@@ -1,6 +1,5 @@
 namespace SefimMcp.Repository;
 
-[McpServerToolType]
 public class Customers (
         ISqlService<Customer> customerService
     ) : ICustomer

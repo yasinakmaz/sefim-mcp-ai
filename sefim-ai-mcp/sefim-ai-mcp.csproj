@@ -10,24 +10,17 @@
         <PackAsTool>true</PackAsTool>
         <PackageType>McpServer</PackageType>
         <SelfContained>true</SelfContained>
-        <PublishSelfContained>true</PublishSelfContained>
-        <PublishSingleFile>true</PublishSingleFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageId>SefimSaleMcpServer</PackageId>
         <PackageVersion>0.1.0-beta</PackageVersion>
         <PackageTags>AI; MCP; server; stdio</PackageTags>
         <Description>Sefim Sale Mcp Server Program</Description>
         <PublishAot>true</PublishAot>
-        <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+        <OptimizationPreference>Speed</OptimizationPreference>
         <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
         <PublishTrimmed>true</PublishTrimmed>
         <TrimMode>full</TrimMode>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-        <SelfContained>true</SelfContained>
-        <PublishReadyToRun>true</PublishReadyToRun>
-        <TieredCompilation>true</TieredCompilation>
-        <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
-        <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
         <Deterministic>true</Deterministic>
@@ -38,10 +31,15 @@
 
     <ItemGroup>
         <None Include=".mcp\server.json" Pack="true" PackagePath="/.mcp/" />
+        <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="" />
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
+        <None Include="..\\knowledge\\README.md" Link="knowledge\\README.md" Pack="true" PackagePath="knowledge/" />
+        <None Include="..\\knowledge\\templates\\**\\*" Link="knowledge\\templates\\%(RecursiveDir)%(Filename)%(Extension)" Pack="true" PackagePath="knowledge/templates/%(RecursiveDir)" />
+        <None Update="knowledge.pack" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Condition="Exists('knowledge.pack')" />
+        <None Remove="..\\knowledge\\private\\**\\*" />
     </ItemGroup>
 
     <ItemGroup>
@@ -74,6 +72,13 @@
         <Using Include="SefimMcp.Interfaces" />
         <Using Include="SefimMcp.Repository" />
         <Using Include="SefimMcp.Helper" />
+        <Using Include="SefimMcp.Application.Policies" />
+        <Using Include="SefimMcp.Infrastructure.Metadata" />
+        <Using Include="SefimMcp.Knowledge.Authoring" />
+        <Using Include="SefimMcp.Knowledge.Runtime" />
+        <Using Include="SefimMcp.Mcp.Resources" />
+        <Using Include="SefimMcp.Mcp.Dtos" />
+        <Using Include="SefimMcp.Mcp.Tools" />
     </ItemGroup>
     
     <ItemGroup>
