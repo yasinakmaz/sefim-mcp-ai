@@ -1,0 +1,153 @@
+name: Release installers
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Setup version (defaults to PackageVersion in the csproj)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+      allow-missing-pack: ${{ steps.pack.outputs.allow-missing }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve version
+        id: resolve
+        run: |
+          version="${{ inputs.version }}"
+          if [[ -z "$version" && "${GITHUB_REF}" == refs/tags/v* ]]; then
+            version="${GITHUB_REF#refs/tags/v}"
+          fi
+          if [[ -z "$version" ]]; then
+            version="$(sed -n 's:.*<PackageVersion>\(.*\)</PackageVersion>.*:\1:p' sefim-ai-mcp/sefim-ai-mcp.csproj | head -1)"
+          fi
+          if [[ -z "$version" ]]; then echo "Version could not be resolved." >&2; exit 1; fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Check knowledge pack
+        id: pack
+        run: |
+          pack=sefim-ai-mcp/knowledge.pack
+          if [[ -f "$pack" ]]; then
+            header="$(head -c 8 "$pack")"
+            if [[ "$header" != "SEFIMKP1" ]]; then echo "knowledge.pack missing SEFIMKP1 header" >&2; exit 1; fi
+            echo "allow-missing=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "allow-missing=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::knowledge.pack is missing; setups will ship without business knowledge."
+          fi
+
+  build:
+    needs: version
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            label: win-x64
+          - os: windows-latest
+            rid: win-arm64
+            label: win-arm64
+          - os: ubuntu-latest
+            rid: linux-x64
+            label: linux-x64
+          - os: ubuntu-24.04-arm
+            rid: linux-arm64
+            label: linux-arm64
+          - os: macos-13
+            rid: osx-x64
+            label: macos-x64
+          - os: macos-14
+            rid: osx-arm64
+            label: macos-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore sefim-ai-mcp.sln
+
+      - name: Test
+        if: matrix.rid == 'linux-x64'
+        run: dotnet test tests/SefimMcp.Tests/SefimMcp.Tests.csproj -c Release --no-restore
+
+      - name: Publish ${{ matrix.rid }}
+        shell: bash
+        run: |
+          dotnet publish sefim-ai-mcp/sefim-ai-mcp.csproj \
+            -c Release -r ${{ matrix.rid }} --self-contained true \
+            -p:AllowMissingKnowledgePack=${{ needs.version.outputs.allow-missing-pack }} \
+            -p:PackageVersion=${{ needs.version.outputs.version }} \
+            -o artifacts/${{ matrix.rid }}
+
+      - name: Verify payload
+        shell: bash
+        run: |
+          exe="artifacts/${{ matrix.rid }}/sefim-ai-mcp"
+          [[ "${{ matrix.rid }}" == win-* ]] && exe="${exe}.exe"
+          [[ -f "$exe" ]] || { echo "Publish output is missing $exe" >&2; exit 1; }
+          [[ -f "artifacts/${{ matrix.rid }}/appsettings.json" ]] || { echo "appsettings.json missing" >&2; exit 1; }
+          if find "artifacts/${{ matrix.rid }}" -iname '*.md' | grep -q .; then
+            echo "Plaintext knowledge in payload:" >&2
+            find "artifacts/${{ matrix.rid }}" -iname '*.md' >&2
+            exit 1
+          fi
+          if [[ "${{ needs.version.outputs.allow-missing-pack }}" == "false" ]]; then
+            packed="artifacts/${{ matrix.rid }}/knowledge.pack"
+            [[ -f "$packed" ]] || { echo "knowledge.pack did not reach publish output" >&2; exit 1; }
+            header="$(head -c 8 "$packed")"
+            [[ "$header" == "SEFIMKP1" ]] || { echo "Published knowledge.pack is not encrypted" >&2; exit 1; }
+          fi
+
+      - name: Install Qt Installer Framework
+        shell: bash
+        run: |
+          python3 -m pip install --quiet --upgrade aqtinstall
+          case "${{ matrix.os }}" in
+            windows-*) host=windows ;;
+            macos-*)   host=mac ;;
+            *)         host=linux ;;
+          esac
+          python3 -m aqt install-tool "$host" desktop tools_ifw --outputdir .qtifw-tools
+
+      - name: Build installer
+        shell: bash
+        run: |
+          chmod +x installer/qtifw/build-installer.sh
+          installer/qtifw/build-installer.sh "artifacts/${{ matrix.rid }}" "${{ needs.version.outputs.version }}" "${{ matrix.label }}"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SefimMcpSetup-${{ needs.version.outputs.version }}-${{ matrix.label }}
+          path: SefimMcpSetup-${{ needs.version.outputs.version }}-${{ matrix.label }}.*
+          if-no-files-found: error
+
+  release:
+    needs: [version, build]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Attach to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
