@@ -12,25 +12,19 @@
     <!-- ============================================
          2. AOT UYUMLULUĞU AYARLARI
          ============================================ -->
-    <PublishAot>true</PublishAot>
-    <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
-    <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+    <!-- Kütüphane yayımlanmaz, uygulama içinde AOT derlenir. IsAotCompatible trim/AOT
+         analizcilerini açar ve assembly'yi trimmable işaretler; PublishAot ile
+         PublishTrimmed ise yalnızca self-contained uygulamada geçerlidir ve bu projede
+         "dotnet publish -r <rid>" komutunu NETSDK1102 ile durdururdu. -->
+    <IsAotCompatible>true</IsAotCompatible>
 
     <!-- Suppress warnings from dependency assemblies (Azure.Core, Microsoft.Data.SqlClient, etc.) -->
     <NoWarn>$(NoWarn);IL2104;IL3053</NoWarn>
 
-    <!-- ============================================
-         3. TRIMMING AYARLARI
-         ============================================ -->
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>full</TrimMode>
-    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-    <SelfContained>false</SelfContained>
 
     <!-- ============================================
          4. PERFORMANS OPTIMIZASYONU AYARLARI
          ============================================ -->
-    <PublishReadyToRun>true</PublishReadyToRun>
     <TieredCompilation>true</TieredCompilation>
     <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
     <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
@@ -42,12 +36,6 @@
     <DebugSymbols>false</DebugSymbols>
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-
-    <!-- ============================================
-         6. RUNTIME AYARLARI
-         ============================================ -->
-    <UseAppHost>true</UseAppHost>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 
     <!-- ============================================
          7. ASSEMBLY VERSİON BİLGİSİ

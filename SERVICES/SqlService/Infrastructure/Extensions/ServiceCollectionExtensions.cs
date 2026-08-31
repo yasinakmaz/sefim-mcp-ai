@@ -33,10 +33,11 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(configuration);
 
         // SqlConnectionSettings'i configuration'dan oku
-        var settings = configuration
-            .GetSection(sectionName)
-            .Get<SqlConnectionSettings>()
-            ?? throw new InvalidOperationException($"Configuration section '{sectionName}' not found or invalid.");
+        var section = configuration.GetSection(sectionName);
+        if (!section.Exists())
+            throw new InvalidOperationException($"Configuration section '{sectionName}' not found or invalid.");
+
+        var settings = ReadSettings(section);
 
         // Validate settings
         settings.Validate();
@@ -125,5 +126,54 @@ public static class ServiceCollectionExtensions
         configureSettings?.Invoke(settings);
 
         return AddSqlService(services, settings);
+    }
+
+    /// <summary>
+    /// Configuration section'ı elle okur.
+    /// </summary>
+    /// <remarks>
+    /// ConfigurationBinder.Get&lt;T&gt; yerine elle okuma: binder reflection kullanır,
+    /// RequiresUnreferencedCode/RequiresDynamicCode ile işaretlidir ve trimlenmiş AOT
+    /// derlemesinde IL2026/IL3050 uyarısı üretip sessizce varsayılan değer döndürebilir.
+    /// </remarks>
+    private static SqlConnectionSettings ReadSettings(IConfigurationSection section)
+    {
+        var settings = new SqlConnectionSettings();
+
+        settings.ConnectionString = section["ConnectionString"] ?? settings.ConnectionString;
+        settings.CommandTimeout = ReadInt32(section, "CommandTimeout", settings.CommandTimeout);
+        settings.BatchInsertSize = ReadInt32(section, "BatchInsertSize", settings.BatchInsertSize);
+        settings.BatchUpdateSize = ReadInt32(section, "BatchUpdateSize", settings.BatchUpdateSize);
+        settings.BatchDeleteSize = ReadInt32(section, "BatchDeleteSize", settings.BatchDeleteSize);
+        settings.EnableConnectionPooling = ReadBoolean(section, "EnableConnectionPooling", settings.EnableConnectionPooling);
+        settings.MaxPoolSize = ReadInt32(section, "MaxPoolSize", settings.MaxPoolSize);
+        settings.MinPoolSize = ReadInt32(section, "MinPoolSize", settings.MinPoolSize);
+        settings.EnableLogging = ReadBoolean(section, "EnableLogging", settings.EnableLogging);
+
+        return settings;
+    }
+
+    private static int ReadInt32(IConfigurationSection section, string key, int fallback)
+    {
+        var value = section[key];
+        if (string.IsNullOrWhiteSpace(value))
+            return fallback;
+
+        if (!int.TryParse(value, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var parsed))
+            throw new InvalidOperationException($"Configuration value '{section.Path}:{key}' is not a valid integer: {value}");
+
+        return parsed;
+    }
+
+    private static bool ReadBoolean(IConfigurationSection section, string key, bool fallback)
+    {
+        var value = section[key];
+        if (string.IsNullOrWhiteSpace(value))
+            return fallback;
+
+        if (!bool.TryParse(value, out var parsed))
+            throw new InvalidOperationException($"Configuration value '{section.Path}:{key}' is not a valid boolean: {value}");
+
+        return parsed;
     }
 }
