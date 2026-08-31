@@ -38,12 +38,6 @@ public static class ServiceCollectionExtensions
             .Get<SqlConnectionSettings>()
             ?? throw new InvalidOperationException($"Configuration section '{sectionName}' not found or invalid.");
 
-        // Secrets must be provisioned outside source-controlled JSON. This explicit
-        // variable also works when the app is launched by an MCP host.
-        var environmentConnectionString = Environment.GetEnvironmentVariable("SEFIM_SQL_CONNECTION_STRING");
-        if (!string.IsNullOrWhiteSpace(environmentConnectionString))
-            settings.ConnectionString = environmentConnectionString;
-
         // Validate settings
         settings.Validate();
 

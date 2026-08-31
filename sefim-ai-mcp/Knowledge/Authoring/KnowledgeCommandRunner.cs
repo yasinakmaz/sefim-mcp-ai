@@ -19,17 +19,21 @@ public static class KnowledgeCommandRunner
         switch (args[1].ToLowerInvariant())
         {
             case "validate":
-                WriteValidation(KnowledgeDocumentParser.ValidateDirectory(sourceDirectory));
-                Environment.ExitCode = KnowledgeDocumentParser.ValidateDirectory(sourceDirectory).IsValid ? 0 : 1;
+                var validation = KnowledgeDocumentParser.ValidateDirectory(sourceDirectory);
+                WriteValidation(validation);
+                Environment.ExitCode = validation.IsValid ? 0 : 1;
                 return true;
             case "pack":
                 await PackAsync(sourceDirectory, GetOption(args, "--output") ?? Path.Combine(Directory.GetCurrentDirectory(), "knowledge.pack"), cancellationToken);
+                return true;
+            case "stats":
+                WriteStats(sourceDirectory);
                 return true;
             case "generate-table-doc" when args.Length >= 3:
                 await GenerateTableDocumentAsync(args[2], sourceDirectory, configuration, cancellationToken);
                 return true;
             default:
-                Console.Error.WriteLine("Usage: knowledge validate | knowledge pack [--output path] | knowledge generate-table-doc schema.table");
+                Console.Error.WriteLine("Usage: knowledge validate | knowledge stats | knowledge pack [--output path] | knowledge generate-table-doc schema.table");
                 Environment.ExitCode = 2;
                 return true;
         }
@@ -45,10 +49,14 @@ public static class KnowledgeCommandRunner
             return;
         }
 
-        var documents = Directory.EnumerateFiles(sourceDirectory, "*.md", SearchOption.AllDirectories)
-            .Select(file => KnowledgeDocumentParser.TryParse(Path.GetRelativePath(sourceDirectory, file), File.ReadAllText(file), out var document, out _) ? document! : null)
-            .Where(document => document is not null)
-            .ToArray();
+        var documents = ReadDocuments(sourceDirectory);
+        if (documents.Length == 0)
+        {
+            Console.Error.WriteLine($"No knowledge documents were found under {sourceDirectory}. Refusing to write an empty pack.");
+            Environment.ExitCode = 1;
+            return;
+        }
+
         var provider = new EnvironmentKnowledgeKeyProvider("SEFIM_KNOWLEDGE_KEY");
         if (!provider.TryGetKey(out var key))
         {
@@ -59,11 +67,61 @@ public static class KnowledgeCommandRunner
 
         try
         {
-            var pack = new KnowledgePack(documents!, DateTimeOffset.UtcNow);
+            var pack = new KnowledgePack(documents, DateTimeOffset.UtcNow, SourceFingerprint: Fingerprint(documents));
             await File.WriteAllBytesAsync(outputPath, KnowledgePackCodec.Encrypt(pack, key), cancellationToken);
             Console.WriteLine($"Packed {documents.Length} document(s) to {outputPath}.");
+            Console.WriteLine($"Fingerprint: {pack.SourceFingerprint}");
         }
         finally { System.Security.Cryptography.CryptographicOperations.ZeroMemory(key); }
+    }
+
+    private static KnowledgeDocument[] ReadDocuments(string sourceDirectory) =>
+        Directory.Exists(sourceDirectory)
+            ? Directory.EnumerateFiles(sourceDirectory, "*.md", SearchOption.AllDirectories)
+                .OrderBy(file => file, StringComparer.Ordinal)
+                .Select(file => KnowledgeDocumentParser.TryParse(Path.GetRelativePath(sourceDirectory, file), File.ReadAllText(file), out var document, out _) ? document : null)
+                .Where(document => document is not null)
+                .Select(document => document!)
+                .ToArray()
+            : [];
+
+    /// <summary>
+    /// Content hash of the packed documents so a running server can be matched to the sources it was built from.
+    /// It carries no secret: it is derived from text the operator already holds.
+    /// </summary>
+    private static string Fingerprint(IReadOnlyList<KnowledgeDocument> documents)
+    {
+        var builder = new System.Text.StringBuilder();
+        foreach (var document in documents)
+            builder.Append(document.Kind).Append('|').Append(document.Id).Append('|').Append(document.Body).Append('\n');
+
+        return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(builder.ToString())))[..16];
+    }
+
+    private static void WriteStats(string sourceDirectory)
+    {
+        var documents = ReadDocuments(sourceDirectory);
+        if (documents.Length == 0)
+        {
+            Console.Error.WriteLine($"No knowledge documents were found under {sourceDirectory}.");
+            Environment.ExitCode = 1;
+            return;
+        }
+
+        Console.WriteLine($"Source: {sourceDirectory}");
+        Console.WriteLine($"Documents: {documents.Length}");
+        Console.WriteLine($"Fingerprint: {Fingerprint(documents)}");
+        foreach (var group in documents.GroupBy(document => document.Kind).OrderBy(group => group.Key, StringComparer.Ordinal))
+        {
+            var sections = group.Sum(document => KnowledgeChunker.Split(document).Count);
+            Console.WriteLine($"  {group.Key}: {group.Count()} document(s), {sections} searchable section(s)");
+            foreach (var document in group.OrderBy(document => document.Id, StringComparer.Ordinal))
+            {
+                var missingSummary = string.IsNullOrWhiteSpace(document.Summary) ? "  [no summary]" : string.Empty;
+                var missingAliases = document.Aliases is null || document.Aliases.Count == 0 ? "  [no aliases]" : string.Empty;
+                Console.WriteLine($"    {document.Id} ({document.Status}, {document.Exposure}){missingSummary}{missingAliases}");
+            }
+        }
     }
 
     private static async Task GenerateTableDocumentAsync(string qualifiedTable, string sourceDirectory, IConfiguration configuration, CancellationToken cancellationToken)

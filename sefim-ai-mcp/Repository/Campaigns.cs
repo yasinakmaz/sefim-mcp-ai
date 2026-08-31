@@ -11,6 +11,7 @@ public class Campaigns (
     #region Campaign Header
 
     [McpServerTool]
+    [Description("Creates one campaign header. The campaign becomes effective according to its own date and rule fields, so confirm those before writing.")]
     public async ValueTask<int> AddCampaign(CampaignHeader campaignHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.InsertAndGetIdAsync<int>(campaignHeader, cancellationToken);
@@ -19,6 +20,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Creates many campaign headers in one batch. Bulk writes require explicit user confirmation.")]
     public async ValueTask<int> BulkInsertCampaign(List<CampaignHeader> campaignHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.BatchInsertAsync(campaignHeader, 1000, cancellationToken);
@@ -27,6 +29,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Updates one campaign header. Send the complete entity: Şefim updates replace the row, they are not partial updates.")]
     public async ValueTask<bool> UpdateCampaign(CampaignHeader campaignHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.UpdateAsync(campaignHeader, cancellationToken);
@@ -35,6 +38,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Updates many campaign headers in one batch. Bulk writes require explicit user confirmation.")]
     public async ValueTask<int> BulkUpdateCampaign(List<CampaignHeader> campaignHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.BatchUpdateAsync(campaignHeader, 1000, cancellationToken);
@@ -43,6 +47,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Deletes one campaign header by identifier. Deletion is permanent and detail rows may become orphaned; confirm with the user first.")]
     public async ValueTask<bool> DeleteCampaign(int id, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.DeleteAsync(id, cancellationToken);
@@ -51,6 +56,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Deletes many campaign headers in one batch. Deletion is permanent; bulk deletes require explicit user confirmation.")]
     public async ValueTask<int> BulkDeleteCampaign(List<CampaignHeader> campaignHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.BatchDeleteAsync(campaignHeader, 1000, cancellationToken);
@@ -59,6 +65,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Returns every campaign header. Use it to discover campaign identifiers before reading or changing details.")]
     public async ValueTask<List<CampaignHeader>> GetCampaigns(CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.GetAllAsync(cancellationToken);
@@ -67,6 +74,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Returns one campaign header by identifier.")]
     public async ValueTask<CampaignHeader> GetCampaign(int id, CancellationToken cancellationToken = default)
     {
         var result = await campaignHeaderService.GetByIdAsync(id, cancellationToken);
@@ -79,6 +87,7 @@ public class Campaigns (
     #region Campaign Detail
 
     [McpServerTool]
+    [Description("Creates one campaign detail line under an existing campaign header.")]
     public async ValueTask<int> AddCampaignDetail(CampaignDetail campaignDetailHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.InsertAndGetIdAsync<int>(campaignDetailHeader, cancellationToken);
@@ -87,6 +96,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Creates many campaign detail lines in one batch. Bulk writes require explicit user confirmation.")]
     public async ValueTask<int> BulkInsertCampaignDetail(List<CampaignDetail> campaignDetailHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.BatchInsertAsync(campaignDetailHeader, 1000, cancellationToken);
@@ -95,6 +105,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Updates one campaign detail line. Send the complete entity: Şefim updates replace the row.")]
     public async ValueTask<bool> UpdateCampaignDetail(CampaignDetail campaignDetailHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.UpdateAsync(campaignDetailHeader, cancellationToken);
@@ -103,6 +114,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Updates many campaign detail lines in one batch. Bulk writes require explicit user confirmation.")]
     public async ValueTask<int> BulkUpdateCampaignDetail(List<CampaignDetail> campaignDetailHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.BatchUpdateAsync(campaignDetailHeader, 1000, cancellationToken);
@@ -111,6 +123,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Deletes one campaign detail line by identifier. Deletion is permanent; confirm with the user first.")]
     public async ValueTask<bool> DeleteCampaignDetail(int id, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.DeleteAsync(id, cancellationToken);
@@ -119,6 +132,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Deletes many campaign detail lines in one batch. Deletion is permanent; bulk deletes require explicit user confirmation.")]
     public async ValueTask<int> BulkDeleteCampaignDetail(List<CampaignDetail> campaignDetailHeader, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.BatchDeleteAsync(campaignDetailHeader, 1000, cancellationToken);
@@ -127,6 +141,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Returns the detail lines of one campaign header.")]
     public async ValueTask<List<CampaignDetail>> GetCampaignDetails(int campaignHeaderId, CancellationToken cancellationToken = default)
     {
         const string whereQuery = "CampaignHeaderId = @CampaignHeaderId";
@@ -142,6 +157,7 @@ public class Campaigns (
     }
 
     [McpServerTool]
+    [Description("Returns one campaign detail line by identifier.")]
     public async ValueTask<CampaignDetail> GetCampaignDetail(int id, CancellationToken cancellationToken = default)
     {
         var result = await campaignDetailService.GetByIdAsync(id, cancellationToken);

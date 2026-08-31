@@ -34,6 +34,10 @@
         <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="" />
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+        <None Update="appsettings.Local.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
         <None Include="..\\knowledge\\README.md" Link="knowledge\\README.md" Pack="true" PackagePath="knowledge/" />
@@ -74,6 +78,7 @@
         <Using Include="SefimMcp.Helper" />
         <Using Include="SefimMcp.Application.Policies" />
         <Using Include="SefimMcp.Infrastructure.Metadata" />
+        <Using Include="SefimMcp.Knowledge.Models" />
         <Using Include="SefimMcp.Knowledge.Authoring" />
         <Using Include="SefimMcp.Knowledge.Runtime" />
         <Using Include="SefimMcp.Mcp.Resources" />
@@ -84,5 +89,50 @@
     <ItemGroup>
       <ProjectReference Include="..\SERVICES\SqlService\SqlService.csproj" />
     </ItemGroup>
+
+    <!--
+        Templates are authoring skeletons and are shipped in the NuGet package as plain text.
+        Real business content belongs in knowledge/private, which is packed into the encrypted knowledge.pack.
+        This target fails the build if anyone writes prose into a template, because that prose would ship unencrypted.
+    -->
+    <Target Name="VerifyKnowledgeTemplatesAreBlank" BeforeTargets="Pack;Publish">
+        <ItemGroup>
+            <KnowledgeTemplateFile Include="..\knowledge\templates\**\*.md" />
+        </ItemGroup>
+        <ReadLinesFromFile File="%(KnowledgeTemplateFile.FullPath)">
+            <Output TaskParameter="Lines" ItemName="KnowledgeTemplateLine" />
+        </ReadLinesFromFile>
+        <ItemGroup>
+            <!-- Allowed: blank lines, headings, frontmatter keys, frontmatter fences and USER placeholder comments. -->
+            <KnowledgeTemplateProse
+                Include="@(KnowledgeTemplateLine)"
+                Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(Identity)', '^\s*(#{1,6}\s.*|---|(kind|id|status|exposure|title|summary|aliases|max_rows|version):.*|\|.*\||([-*]\s+)?(\*\*[^*]+\*\*:?)?\s*(&lt;!--.*--&gt;)?)\s*$'))" />
+        </ItemGroup>
+        <Error
+            Condition="'@(KnowledgeTemplateProse)' != ''"
+            Code="SEFIM001"
+            Text="knowledge/templates contains authored content and would ship unencrypted. Move it to knowledge/private and run 'knowledge pack'. Offending line(s): @(KnowledgeTemplateProse->'%(Identity)', ' / ')" />
+    </Target>
+
+    <!-- A published server without a pack silently loses every business meaning, so fail loudly instead. -->
+    <Target Name="VerifyKnowledgePackPresent" BeforeTargets="Publish" Condition="'$(AllowMissingKnowledgePack)' != 'true'">
+        <Error
+            Condition="!Exists('$(MSBuildProjectDirectory)\knowledge.pack')"
+            Code="SEFIM002"
+            Text="knowledge.pack is missing next to the project. Run 'dotnet run -- knowledge pack --output sefim-ai-mcp/knowledge.pack' with SEFIM_KNOWLEDGE_KEY set, or publish with -p:AllowMissingKnowledgePack=true to accept a server with no business knowledge." />
+    </Target>
+
+    <!-- Last line of defence: plaintext knowledge must never reach the publish output. -->
+    <Target Name="VerifyNoPlaintextKnowledgeInPublish" AfterTargets="ComputeResolvedFilesToPublishList">
+        <ItemGroup>
+            <LeakedKnowledgeFile
+                Include="@(ResolvedFileToPublish)"
+                Condition="$([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Replace('\','/').Contains('knowledge/private')) Or $([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').EndsWith('.template.md'))" />
+        </ItemGroup>
+        <Error
+            Condition="'@(LeakedKnowledgeFile)' != ''"
+            Code="SEFIM003"
+            Text="Plaintext knowledge would be published: @(LeakedKnowledgeFile->'%(RelativePath)', ', ')" />
+    </Target>
 
 </Project>

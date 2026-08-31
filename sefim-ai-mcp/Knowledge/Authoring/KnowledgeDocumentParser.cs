@@ -1,10 +1,13 @@
 using SefimMcp.Knowledge.Models;
+using SefimMcp.Knowledge.Runtime;
 
 namespace SefimMcp.Knowledge.Authoring;
 
 public static class KnowledgeDocumentParser
 {
     private static readonly StringComparer Comparer = StringComparer.OrdinalIgnoreCase;
+    private static readonly string[] RequiredFields = ["kind", "id", "status", "exposure"];
+    private static readonly string[] KnownKinds = ["application", "glossary", "guidance", "table", "workflow", "business-rule"];
 
     public static bool TryParse(string sourceName, string markdown, out KnowledgeDocument? document, out KnowledgeValidationIssue? issue)
     {
@@ -37,13 +40,19 @@ public static class KnowledgeDocumentParser
             metadata[line[..separator].Trim()] = line[(separator + 1)..].Trim().Trim('"');
         }
 
-        foreach (var required in new[] { "kind", "id", "status", "exposure" })
+        foreach (var required in RequiredFields)
         {
             if (!metadata.TryGetValue(required, out var value) || string.IsNullOrWhiteSpace(value))
             {
                 issue = new(sourceName, "missing_field", $"Frontmatter field '{required}' is required.");
                 return false;
             }
+        }
+
+        if (!KnownKinds.Contains(metadata["kind"], Comparer))
+        {
+            issue = new(sourceName, "unknown_kind", $"Kind '{metadata["kind"]}' is not one of: {string.Join(", ", KnownKinds)}.");
+            return false;
         }
 
         if (!string.Equals(metadata["exposure"], "model", StringComparison.OrdinalIgnoreCase) &&
@@ -57,7 +66,16 @@ public static class KnowledgeDocumentParser
         var title = body.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .FirstOrDefault(static line => line.StartsWith("# ", StringComparison.Ordinal))?[2..].Trim()
             ?? metadata["id"];
-        document = new(metadata["kind"], metadata["id"], metadata["status"], metadata["exposure"], title, body, metadata, sourceName);
+
+        var summary = metadata.TryGetValue("summary", out var summaryValue) && !IsAuthoringPlaceholder(summaryValue)
+            ? summaryValue
+            : null;
+        var aliases = metadata.TryGetValue("aliases", out var aliasValue)
+            ? aliasValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            : [];
+
+        document = new(metadata["kind"], metadata["id"], metadata["status"], metadata["exposure"], title, body, metadata, sourceName, summary, aliases);
+
         return true;
     }
 
@@ -67,12 +85,31 @@ public static class KnowledgeDocumentParser
         if (!Directory.Exists(directory))
             return new(false, [new(directory, "missing_directory", "Knowledge source directory does not exist.")]);
 
+        var seenIds = new Dictionary<string, string>(Comparer);
         foreach (var file in Directory.EnumerateFiles(directory, "*.md", SearchOption.AllDirectories))
         {
-            if (!TryParse(Path.GetRelativePath(directory, file), File.ReadAllText(file), out _, out var issue) && issue is not null)
-                issues.Add(issue);
+            var sourceName = Path.GetRelativePath(directory, file);
+            if (!TryParse(sourceName, File.ReadAllText(file), out var document, out var issue))
+            {
+                if (issue is not null)
+                    issues.Add(issue);
+                continue;
+            }
+
+            var key = $"{document!.Kind}:{document.Id}";
+            if (seenIds.TryGetValue(key, out var firstSource))
+            {
+                issues.Add(new(sourceName, "duplicate_id", $"Identifier '{document.Id}' of kind '{document.Kind}' is already defined in {firstSource}."));
+                continue;
+            }
+
+            seenIds[key] = sourceName;
         }
 
         return new(issues.Count == 0, issues);
     }
+
+    /// <summary>Authoring templates keep their prompts in HTML comments; those are never treated as content.</summary>
+    private static bool IsAuthoringPlaceholder(string value) =>
+        value.Contains("<!--", StringComparison.Ordinal) || value.Contains("USER:", StringComparison.Ordinal);
 }

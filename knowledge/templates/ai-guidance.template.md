@@ -1,16 +1,18 @@
 ---
 kind: guidance
-id: ai-guidance
+id: example-guidance
 status: draft
 exposure: model
+aliases: kural, guidance, davranis
+summary: <!-- USER: Tek cümlelik özet yaz. -->
 ---
 
-# Şefim AI Guidance
+# AI Guidance
 
 ## Discovery Guidance
 
-<!-- USER: AI'nın business bilgisini hangi sırayla keşfetmesi gerektiğini yaz. -->
+<!-- USER: AI'ın hangi durumda schema/knowledge discovery yapması gerektiğini yaz. -->
 
 ## Safe Operation Guidance
 
-<!-- USER: AI'nın güvenli işlem için bilmesi gereken kullanıcıya açık kuralları yaz. -->
+<!-- USER: AI'ın write, delete ve toplu işlemlerde uyması gereken güvenlik ve onay kurallarını yaz. -->

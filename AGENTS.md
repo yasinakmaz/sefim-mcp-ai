@@ -10,3 +10,6 @@
 - SQL değerleri parametreli olmalıdır. Dinamik identifier sadece strict allowlist ile kullanılabilir. Password, token, secret ve connection string MCP response/log içine giremez.
 - Mevcut uncommitted değişiklikleri koruyun. `git reset --hard`, `git clean`, branch değiştirme, commit veya push yapmayın.
 - Değişiklik sonrası en az `dotnet restore`, `dotnet build`, `dotnet test` ve mümkünse current-RID Native AOT publish çalıştırın.
+- Yeni bir MCP tool veya DTO eklerken parametre tiplerini de `AppJsonSerializerContext` içine yazın. Kaydedilmeyen bir tip (dizi ve `Dictionary` dahil) AOT publish'te değil, server açılışında `NotSupportedException` ile patlar.
+- Tool yüzeyi bir maliyet kalemidir: her tool tanımı her istekte context'e girer. Yeni tool eklerken `[Description]` zorunludur, profil seçimi `Program.cs` içinde compile-time tiplerle yapılır.
+- `knowledge/templates/` altına gerçek içerik yazmayın; template'ler pakete düz metin girer ve build `SEFIM001` ile durur.

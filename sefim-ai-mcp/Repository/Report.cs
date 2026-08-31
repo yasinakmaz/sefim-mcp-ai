@@ -303,8 +303,9 @@ public class Report(
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(query);
 
-        if (!IsReadOnlySelectQuery(query))
-            throw new ArgumentException("Only one read-only SELECT or CTE SELECT statement is allowed.", nameof(query));
+        var guardFailure = ReadOnlySqlGuard.Validate(query);
+        if (guardFailure is not null)
+            throw new ArgumentException(guardFailure, nameof(query));
 
         limit = Math.Clamp(limit, 1, 200);
 
@@ -330,19 +331,6 @@ public class Report(
         command.Parameters.Add("@par3", SqlDbType.Int).Value = billType1;
         command.Parameters.Add("@par4", SqlDbType.Int).Value = billType2;
         command.Parameters.Add("@par5", SqlDbType.Int).Value = billType3;
-    }
-
-    private static bool IsReadOnlySelectQuery(string query)
-    {
-        var normalized = query.TrimStart();
-        if (!(normalized.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase) ||
-              normalized.StartsWith("WITH", StringComparison.OrdinalIgnoreCase)) ||
-            normalized.Contains(';'))
-            return false;
-
-        string[] forbiddenTokens = [" INSERT ", " UPDATE ", " DELETE ", " MERGE ", " EXEC ", " EXECUTE ", " CREATE ", " ALTER ", " DROP ", " TRUNCATE ", " GRANT ", " REVOKE ", " DENY ", " INTO ", " OPENROWSET ", " OPENQUERY ", " PASSWORD ", " TOKEN ", " SECRET ", " CONNECTIONSTRING ", " APIKEY ", " PRIVATEKEY "];
-        var padded = $" {normalized.ToUpperInvariant()} ";
-        return !forbiddenTokens.Any(padded.Contains);
     }
 
     private static async Task<SelectQueryResult> ReadDynamicResultSetAsync(SqlDataReader reader, CancellationToken cancellationToken)
