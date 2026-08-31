@@ -101,7 +101,7 @@ Component.prototype.createOperations = function()
     // so @TargetDir@/<exeName> already exists on disk. Non-fatal by design: a configuration
     // failure must not roll back a successful file install, matching the old NSIS behavior
     // (Section only showed a MessageBox warning, it never aborted).
-    component.addOperation("Execute", args.concat(["{0,1}"]));
+    component.addOperation("Execute", ["{0,1}"].concat(args));
 }
 
 function Controller() {}
