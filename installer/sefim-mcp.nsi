@@ -1,4 +1,4 @@
-; ---------------------------------------------------------------------------
+﻿; ---------------------------------------------------------------------------
 ; Sefim MCP Server - Windows setup
 ;
 ; Build (from the repository root):
@@ -275,16 +275,14 @@ Function .onInit
   !insertmacro RunHelper "Detect" "$PLUGINSDIR\Configure-SefimMcp.ps1" "quiet"
   Call ReadHelperResult
 
-  ${If} $ClaudeFound != "1"
-  ${AndIf} $ChatGptFound != "1"
-    MessageBox MB_OK|MB_ICONSTOP "Bilgisayarda Claude Desktop veya ChatGPT Desktop bulunamadı.$\r$\n$\r$\nÖnce bu uygulamalardan birini kurun, ardından kurulumu tekrar çalıştırın."
-    Abort
-  ${EndIf}
-
-  ${If} $ClaudeFound == "1"
-    StrCpy $HostChoice "claude"
-  ${Else}
+  ; Claude Desktop and ChatGPT Desktop install into the hidden WindowsApps
+  ; folder, which is not readable, so their presence cannot be detected
+  ; reliably. Detection only preselects a client; the setup runs either way.
+  ${If} $ChatGptFound == "1"
+  ${AndIf} $ClaudeFound != "1"
     StrCpy $HostChoice "chatgpt"
+  ${Else}
+    StrCpy $HostChoice "claude"
   ${EndIf}
 
   ${If} $SefimDir == ""
@@ -328,8 +326,7 @@ Function HostPageCreate
   ${If} $ClaudeFound == "1"
     ${NSD_SetText} $0 "Bulundu: $ClaudePath"
   ${Else}
-    ${NSD_SetText} $0 "Bu bilgisayarda bulunamadı."
-    EnableWindow $RadioClaude 0
+    ${NSD_SetText} $0 "Kurulu görünmüyor; kayıt yine de eklenir."
   ${EndIf}
 
   ${NSD_CreateGroupBox} 0 68u 100% 34u "  ChatGPT Desktop  "
@@ -345,8 +342,7 @@ Function HostPageCreate
   ${If} $ChatGptFound == "1"
     ${NSD_SetText} $0 "Bulundu: $ChatGptPath"
   ${Else}
-    ${NSD_SetText} $0 "Bu bilgisayarda bulunamadı."
-    EnableWindow $RadioChatGpt 0
+    ${NSD_SetText} $0 "Kurulu görünmüyor; kayıt yine de eklenir."
   ${EndIf}
 
   ${If} $HostChoice == "claude"

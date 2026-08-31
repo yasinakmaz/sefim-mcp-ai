@@ -35,7 +35,7 @@ done
 
 output="$repo_root/SefimMcpSetup-$version-x64.exe"
 
-makensis -V3 \
+makensis -V3 -INPUTCHARSET UTF8 \
     "-DVERSION=$version" \
     "-DVERSION_NUMERIC=$numeric" \
     "-DPAYLOAD_DIR=$payload_dir" \

@@ -9,8 +9,8 @@ yapay zekâ istemcisinin yapılandırmasına MCP kaydını ekler.
 | Adım | Davranış |
 | --- | --- |
 | Sistem kontrolü | Windows 10 altı sürümlerde ve 32 bit Windows'ta kurulum başlamaz. |
-| İstemci kontrolü | Claude Desktop veya ChatGPT Desktop yoksa kurulum uyarı verip kapanır. |
-| İstemci seçimi | Kurulu olan istemciler seçilebilir, kurulu olmayan seçenek pasiftir. |
+| İstemci kontrolü | Yapılmaz. Claude Desktop ve ChatGPT Desktop, okunamayan `WindowsApps` klasörüne kurulabildiği için varlıkları güvenilir biçimde saptanamaz; kurulum her durumda başlar. |
+| İstemci seçimi | Her iki istemci de seçilebilir. Tespit edilebilen istemci yalnızca varsayılan seçimi belirler. |
 | Hedef klasör | Varsayılan `C:\Program Files (x86)\OZFILIZYAZILIM\SEFIM-MCP\{SÜRÜM}` |
 | Şefim tespiti | `C:\Program Files (x86)\Vega\Sefim` başta olmak üzere bilinen konumlar taranır. |
 | Bağlantı bilgisi | Şefim klasöründeki `connectionstring.txt` dosyasından yalnızca `Data Source`, `Initial Catalog`, `User ID`, `Password` alanları okunur. |
@@ -73,7 +73,7 @@ Windows'ta elle:
 ```powershell
 dotnet publish sefim-ai-mcp\sefim-ai-mcp.csproj -c Release -r win-x64 --self-contained true `
   -p:AllowMissingKnowledgePack=true -o artifacts\win-x64
-makensis /DVERSION=0.1.0-beta /DVERSION_NUMERIC=0.1.0.0 /DPAYLOAD_DIR=..\artifacts\win-x64 installer\sefim-mcp.nsi
+makensis /INPUTCHARSET UTF8 /DVERSION=0.1.0-beta /DVERSION_NUMERIC=0.1.0.0 /DPAYLOAD_DIR=..\artifacts\win-x64 installer\sefim-mcp.nsi
 ```
 
 Linux'ta (payload Windows'tan kopyalandıysa):
@@ -101,7 +101,7 @@ CI'da her derlemede çalışır; elle çalıştırmak için Windows PowerShell 5
 
 | Dosya | İşlev |
 | --- | --- |
-| `sefim-mcp.nsi` | Setup betiği, sihirbaz sayfaları, kayıt defteri ve kaldırma |
+| `sefim-mcp.nsi` | Setup betiği, sihirbaz sayfaları, kayıt defteri ve kaldırma (UTF-8 BOM ile saklanır; BOM'suz derlemede Windows üzerindeki `makensis` kaynağı ANSI sayar ve Türkçe karakterler bozulur) |
 | `scripts/Configure-SefimMcp.ps1` | Tespit, connectionstring.txt ayrıştırma, SQL testi, JSON birleştirme |
 | `tests/Test-Configure.ps1` | Yapılandırma yardımcısının doğrulama testleri |
 | `assets/generate-assets.py` | Sihirbaz görsellerini ve ikonları üretir |

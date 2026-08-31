@@ -119,7 +119,9 @@ jobs:
         shell: pwsh
         run: |
           $out = "SefimMcpSetup-${{ steps.version.outputs.version }}-x64.exe"
-          makensis /DVERSION=${{ steps.version.outputs.version }} `
+          # /INPUTCHARSET pins the source encoding: on Windows makensis otherwise
+          # falls back to the system ANSI codepage and mangles the Turkish text.
+          makensis /INPUTCHARSET UTF8 /DVERSION=${{ steps.version.outputs.version }} `
                    /DVERSION_NUMERIC=${{ steps.version.outputs.numeric }} `
                    /DPAYLOAD_DIR=..\artifacts\win-x64 `
                    /DOUTPUT_FILE=..\$out `

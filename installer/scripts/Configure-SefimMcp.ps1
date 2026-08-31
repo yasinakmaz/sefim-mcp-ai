@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Configuration helper invoked by the Sefim MCP NSIS installer.
 
@@ -204,6 +204,8 @@ function Test-HostInstalled {
                     (Join-Path $local 'Programs\Claude'),
                     (Join-Path $roaming 'Claude')
                 )
+                $markers += @(Get-ChildItem -LiteralPath (Join-Path $local 'Packages') -Directory -Filter '*Claude*' -ErrorAction SilentlyContinue |
+                    ForEach-Object { $_.FullName })
             }
             'chatgpt' {
                 $markers += @(
@@ -340,7 +342,7 @@ function Read-JsonFile {
         $parsed = $raw | ConvertFrom-Json
     }
     catch {
-        Fail "Existing JSON is not valid and was left untouched: $Path"
+        Fail "Mevcut JSON dosyası geçerli değil, dosyaya dokunulmadı: $Path"
     }
     if ($null -eq $parsed) { return (New-Object PSObject) }
     return $parsed
@@ -568,7 +570,7 @@ function Invoke-Test {
         $command.CommandText = 'SELECT DB_NAME()'
         $name = [string]$command.ExecuteScalar()
         Write-Pair 'status' 'ok'
-        Write-Pair 'message' "Connected to $name on $Server."
+        Write-Pair 'message' "$Server üzerindeki $name veritabanına bağlanıldı."
     }
     catch {
         Fail $_.Exception.Message
@@ -583,7 +585,7 @@ function Invoke-Configure {
     if (-not $HostApp) { Fail 'HostApp is required.' }
 
     $exePath = Join-Path $InstallDir $ExeName
-    if (-not (Test-Path -LiteralPath $exePath)) { Fail "Server executable not found: $exePath" }
+    if (-not (Test-Path -LiteralPath $exePath)) { Fail "Sunucu çalıştırılabilir dosyası bulunamadı: $exePath" }
 
     $connectionString = New-SefimConnectionString -Server $Server -Database $Database -UserId $UserId -Password $Password
     $imageLocation = Find-ProImages -Root $SefimDir
