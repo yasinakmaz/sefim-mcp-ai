@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Şefim MCP Server</Name>
+    <Version>0.1.0-beta</Version>
+    <Title>Şefim MCP Server Kurulumu</Title>
+    <Publisher>OZFİLİZ YAZILIM</Publisher>
+    <ProductUrl>https://github.com/yasinakmaz/sefim-mcp-ai</ProductUrl>
+    <InstallerApplicationIcon>../assets/installer</InstallerApplicationIcon>
+    <InstallerWindowIcon>../assets/installer.png</InstallerWindowIcon>
+    <Logo>../assets/logo.png</Logo>
+    <!-- Per-user install: no admin/root elevation requested on any platform. -->
+    <TargetDir>@ApplicationsDirUser@/SefimMcp/@ProductVersion@</TargetDir>
+    <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+    <AllowSpaceInPath>true</AllowSpaceInPath>
+    <RunProgram>@TargetDir@/sefim-ai-mcp</RunProgram>
+    <RunProgramArguments>
+        <Argument>--version</Argument>
+    </RunProgramArguments>
+    <RunProgramDescription>Kurulumu doğrula</RunProgramDescription>
+    <StartMenuDir>Şefim MCP Server</StartMenuDir>
+    <MaintenanceToolName>SefimMcpUninstall</MaintenanceToolName>
+    <WizardStyle>Modern</WizardStyle>
+</Installer>

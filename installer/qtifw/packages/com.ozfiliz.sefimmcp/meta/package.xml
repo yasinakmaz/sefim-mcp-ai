@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Şefim MCP Server</DisplayName>
+    <Description>Şefim POS verilerini yapay zekâ istemcilerine bağlayan MCP sunucusu.</Description>
+    <Version>0.1.0-beta</Version>
+    <ReleaseDate>2026-09-01</ReleaseDate>
+    <Name>com.ozfiliz.sefimmcp</Name>
+    <Default>true</Default>
+    <ForcedInstallation>true</ForcedInstallation>
+    <Script>installscript.qs</Script>
+    <UserInterfaces>
+        <UserInterface>ClientPage.ui</UserInterface>
+        <UserInterface>SefimPage.ui</UserInterface>
+    </UserInterfaces>
+</Package>
