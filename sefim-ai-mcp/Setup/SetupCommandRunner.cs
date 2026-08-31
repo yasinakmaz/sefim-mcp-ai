@@ -140,9 +140,12 @@ public static class SetupCommandRunner
                 WritePair("cleaned", path);
         }
 
-        var codexPath = SetupPaths.CodexConfigPath();
-        if (File.Exists(codexPath))
-            ClientConfigWriter.UpdateCodexToml(codexPath, serverKey, exePath: "", toolProfile: "", remove: true);
+        if (host is null || host == "chatgpt")
+        {
+            var codexPath = SetupPaths.CodexConfigPath();
+            if (File.Exists(codexPath))
+                ClientConfigWriter.UpdateCodexToml(codexPath, serverKey, exePath: "", toolProfile: "", remove: true);
+        }
 
         WritePair("status", "ok");
     }
