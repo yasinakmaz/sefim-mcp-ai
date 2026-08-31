@@ -14,8 +14,8 @@
                  host configuration file, leaving all other keys untouched
       Remove     delete the MCP server entry again (used by the uninstaller)
 
-    Output is deliberately ASCII "key=value" lines so the installer can parse it
-    from nsExec::ExecToStack without codepage surprises.
+    Results are written as "key=value" lines, both to stdout and to the UTF-16LE
+    file given by -ResultFile, which is what the installer reads back.
 
 .NOTES
     Windows PowerShell 5.1 (shipped with Windows 10 and later) is the only requirement.
@@ -67,7 +67,9 @@ function Write-Pair {
 
 function Save-Result {
     if (-not $ResultFile) { return }
-    $encoding = New-Object System.Text.UnicodeEncoding($false, $true)
+    # UTF-16LE without a BOM: NSIS FileReadUTF16LE would otherwise return the BOM
+    # as part of the first key.
+    $encoding = New-Object System.Text.UnicodeEncoding($false, $false)
     [System.IO.File]::WriteAllLines($ResultFile, $script:ResultLines, $encoding)
 }
 
@@ -170,8 +172,10 @@ function Resolve-HostConfigPath {
     if ($MustExist) { return '' }
 
     # Nothing on disk yet: create the canonical file inside the current profile.
-    $fallback = (Get-HostConfigCandidates -App $App -ProfilePath (Get-CandidateProfiles)[0])[0]
-    return $fallback
+    # @() is required: a single returned path would otherwise be indexed as a string.
+    $profiles = @(Get-CandidateProfiles)
+    $candidates = @(Get-HostConfigCandidates -App $App -ProfilePath $profiles[0])
+    return $candidates[0]
 }
 
 function Get-CodexConfigPath {
@@ -363,7 +367,9 @@ function Save-JsonFile {
 function Set-JsonProperty {
     param($Object, [string]$Name, $Value)
 
-    if ($Object.PSObject.Properties.Name -contains $Name) {
+    # The indexer is used instead of .Properties.Name: under Set-StrictMode the
+    # latter throws on an object that has no properties at all.
+    if ($null -ne $Object.PSObject.Properties[$Name]) {
         $Object.PSObject.Properties[$Name].Value = $Value
     }
     else {
@@ -371,11 +377,21 @@ function Set-JsonProperty {
     }
 }
 
+function Get-EntryCommand {
+    param($Entry)
+
+    if ($Entry -isnot [PSCustomObject]) { return '' }
+    $property = $Entry.PSObject.Properties['command']
+    if ($null -eq $property) { return '' }
+    return [string]$property.Value
+}
+
 function Get-OrCreateSection {
     param($Object, [string]$Name)
 
-    if ($Object.PSObject.Properties.Name -contains $Name -and $Object.$Name -is [PSCustomObject]) {
-        return $Object.$Name
+    $existing = $Object.PSObject.Properties[$Name]
+    if ($null -ne $existing -and $existing.Value -is [PSCustomObject]) {
+        return $existing.Value
     }
     $section = New-Object PSObject
     Set-JsonProperty -Object $Object -Name $Name -Value $section
@@ -436,11 +452,7 @@ function Update-HostConfig {
     # so the host does not keep launching a stale server next to the new one.
     foreach ($property in @($servers.PSObject.Properties)) {
         if ($property.Name -eq $Key) { continue }
-        $command = ''
-        if ($property.Value -is [PSCustomObject] -and
-            $property.Value.PSObject.Properties.Name -contains 'command') {
-            $command = [string]$property.Value.command
-        }
+        $command = Get-EntryCommand -Entry $property.Value
         if ($command -and $command -match '(?i)SEFIM-MCP|sefim-ai-mcp\.exe') {
             $servers.PSObject.Properties.Remove($property.Name)
             Write-Pair 'removed' $property.Name
@@ -457,18 +469,15 @@ function Remove-HostConfigEntry {
     if (-not (Test-Path -LiteralPath $Path)) { return $false }
 
     $config = Read-JsonFile -Path $Path
-    if ($config.PSObject.Properties.Name -notcontains 'mcpServers') { return $false }
+    $section = $config.PSObject.Properties['mcpServers']
+    if ($null -eq $section) { return $false }
 
-    $servers = $config.mcpServers
+    $servers = $section.Value
     if ($servers -isnot [PSCustomObject]) { return $false }
 
     $changed = $false
     foreach ($property in @($servers.PSObject.Properties)) {
-        $command = ''
-        if ($property.Value -is [PSCustomObject] -and
-            $property.Value.PSObject.Properties.Name -contains 'command') {
-            $command = [string]$property.Value.command
-        }
+        $command = Get-EntryCommand -Entry $property.Value
         if ($property.Name -eq $Key -or ($command -and $command -match '(?i)SEFIM-MCP|sefim-ai-mcp\.exe')) {
             $servers.PSObject.Properties.Remove($property.Name)
             $changed = $true

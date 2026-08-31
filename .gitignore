@@ -489,3 +489,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Windows setup build output
+artifacts/
+SefimMcpSetup-*.exe
+installer/*.exe

@@ -24,6 +24,7 @@ SetCompressor /SOLID lzma
 !define /ifndef VERSION "0.1.0-beta"
 !define /ifndef PAYLOAD_DIR "..\artifacts\win-x64"
 !define /ifndef OUTPUT_FILE "SefimMcpSetup-${VERSION}-x64.exe"
+!define /ifndef VERSION_NUMERIC "0.1.0.0"
 
 !define PRODUCT_NAME "Şefim MCP Server"
 !define COMPANY_NAME "OZFİLİZ YAZILIM"
@@ -43,7 +44,7 @@ ShowInstDetails show
 ShowUninstDetails show
 BrandingText "${COMPANY_NAME}"
 
-VIProductVersion "0.1.0.0"
+VIProductVersion "${VERSION_NUMERIC}"
 VIAddVersionKey "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey "CompanyName" "${COMPANY_NAME}"
 VIAddVersionKey "LegalCopyright" "© ${COMPANY_NAME}"
@@ -102,7 +103,6 @@ Var HostConfigPath
 
 Var Dialog
 Var FontBold
-Var FontSmall
 Var RadioClaude
 Var RadioChatGpt
 Var TxtSefimDir
@@ -286,7 +286,6 @@ Function .onInit
   ${EndIf}
 
   CreateFont $FontBold "$(^Font)" "$(^FontSize)" 700
-  CreateFont $FontSmall "$(^Font)" "$(^FontSize)" 400
 FunctionEnd
 
 Function un.onInit
@@ -316,6 +315,7 @@ Function HostPageCreate
   ${NSD_CreateRadioButton} 8u 40u 60% 12u "Claude Desktop kullan"
   Pop $RadioClaude
   SendMessage $RadioClaude ${WM_SETFONT} $FontBold 0
+  ${NSD_OnClick} $RadioClaude OnPickClaude
 
   ${NSD_CreateLabel} 12u 51u 90% 10u ""
   Pop $0
@@ -332,6 +332,7 @@ Function HostPageCreate
   ${NSD_CreateRadioButton} 8u 80u 60% 12u "ChatGPT Desktop kullan"
   Pop $RadioChatGpt
   SendMessage $RadioChatGpt ${WM_SETFONT} $FontBold 0
+  ${NSD_OnClick} $RadioChatGpt OnPickChatGpt
 
   ${NSD_CreateLabel} 12u 91u 90% 10u ""
   Pop $0
@@ -352,6 +353,22 @@ Function HostPageCreate
   Pop $0
 
   nsDialogs::Show
+FunctionEnd
+
+; The two radio buttons sit in separate group boxes, so exclusivity is enforced
+; here instead of relying on the dialog's WS_GROUP order.
+Function OnPickClaude
+  Pop $0
+  ${NSD_Check} $RadioClaude
+  ${NSD_Uncheck} $RadioChatGpt
+  StrCpy $HostChoice "claude"
+FunctionEnd
+
+Function OnPickChatGpt
+  Pop $0
+  ${NSD_Check} $RadioChatGpt
+  ${NSD_Uncheck} $RadioClaude
+  StrCpy $HostChoice "chatgpt"
 FunctionEnd
 
 Function HostPageLeave
