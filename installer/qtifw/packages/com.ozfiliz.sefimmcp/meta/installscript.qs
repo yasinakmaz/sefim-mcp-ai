@@ -28,7 +28,6 @@ Component.prototype.ClientPageCallback = function()
     var page = gui.pageWidgetByObjectName("DynamicClientPage");
     if (page == null)
         return;
-    page.claudeRadio.checked = true;
 }
 
 Component.prototype.SefimPageCallback = function()
@@ -41,21 +40,24 @@ Component.prototype.SefimPageCallback = function()
     if (page.imagesEdit.text.length === 0)
         page.imagesEdit.text = defaultImagesDir();
 
-    page.sefimDirBrowse.clicked.connect(function() {
-        var dir = QFileDialog.getExistingDirectory("Şefim kurulum klasörünü seçin", page.sefimDirEdit.text);
-        if (dir.length > 0)
-            page.sefimDirEdit.text = dir;
-    });
-    page.imagesBrowse.clicked.connect(function() {
-        var dir = QFileDialog.getExistingDirectory("Görseller klasörünü seçin", page.imagesEdit.text);
-        if (dir.length > 0)
-            page.imagesEdit.text = dir;
-    });
+    if (component.sefimPageWired !== true) {
+        page.sefimDirBrowse.clicked.connect(function() {
+            var dir = QFileDialog.getExistingDirectory("Şefim kurulum klasörünü seçin", page.sefimDirEdit.text);
+            if (dir.length > 0)
+                page.sefimDirEdit.text = dir;
+        });
+        page.imagesBrowse.clicked.connect(function() {
+            var dir = QFileDialog.getExistingDirectory("Görseller klasörünü seçin", page.imagesEdit.text);
+            if (dir.length > 0)
+                page.imagesEdit.text = dir;
+        });
 
-    // Server + Database stay mandatory; User/Password are optional (Integrated Security fallback,
-    // see SefimMcp.Setup.SefimDetection.BuildConnectionString).
-    page.serverEdit.textChanged.connect(function() { validateSefimPage(page); });
-    page.databaseEdit.textChanged.connect(function() { validateSefimPage(page); });
+        // Server + Database stay mandatory; User/Password are optional (Integrated Security fallback,
+        // see SefimMcp.Setup.SefimDetection.BuildConnectionString).
+        page.serverEdit.textChanged.connect(function() { validateSefimPage(page); });
+        page.databaseEdit.textChanged.connect(function() { validateSefimPage(page); });
+        component.sefimPageWired = true;
+    }
     validateSefimPage(page);
 }
 
