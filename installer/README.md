@@ -56,7 +56,7 @@ bu komutlara yönlenir:
 | `setup detect` | Şefim klasörünü, `proimages` yolunu, `connectionstring.txt`'ten okunan bağlantı bilgilerini ve istemci config yollarını `anahtar=değer` satırları olarak yazar. |
 | `setup test --server S --database D [--user-id U] [--password P]` | Verilen bilgilerle SQL bağlantısını dener (`SqlConnectionTester`), `status=ok|error` döner. |
 | `setup configure --install-dir DIR --server S --database D [--user-id U] [--password P] [--sefim-dir DIR] [--pro-images DIR] [--host claude\|chatgpt] [--host-config PATH] [--tool-profile PROFILE] [--server-key KEY]` | `appsettings.json`'ı üretir/günceller ve seçilen istemcinin config dosyasına MCP kaydını ekler (diğer anahtarlar korunur). |
-| `setup remove [--host claude\|chatgpt] [--server-key KEY]` | Yalnızca ilgili Şefim MCP kaydını istemci config dosyalarından (ve varsa Codex `config.toml`'dan) siler. |
+| `setup remove [--host claude\|chatgpt] [--server-key KEY]` | İlgili `--server-key` kaydını ve `command` alanında SEFIM-MCP/sefim-ai-mcp içeren diğer eski sürüm kayıtlarını istemci config dosyalarından (ve varsa Codex `config.toml`'dan) siler. |
 
 `installscript.qs`, `createOperations()` içinde bu komutu şu şekilde çağırır:
 
@@ -85,7 +85,7 @@ Yazma davranışı `ClientConfigWriter`/`AppSettingsWriter` tarafındandır:
 * `command` alanı `SEFIM-MCP` veya `sefim-ai-mcp` içeren, farklı bir anahtar altındaki eski sürüm
   kayıtları otomatik silinir; böylece istemci eski (kaldırılmış) sürüm klasöründeki ikiliyi
   başlatmaya devam etmez.
-* `setup remove`, yalnızca ilgili `--server-key` kaydını siler; dosyanın geri kalanına dokunmaz.
+* `setup remove`, ilgili `--server-key` kaydını ve `command` alanında SEFIM-MCP/sefim-ai-mcp içeren diğer kayıtları siler; dosyanın geri kalanına dokunmaz.
 
 ## Yerel derleme
 
