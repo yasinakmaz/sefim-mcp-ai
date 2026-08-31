@@ -61,14 +61,31 @@ jobs:
         shell: powershell
         run: .\installer\tests\Test-Configure.ps1
 
+      - name: Resolve knowledge pack
+        id: pack
+        shell: pwsh
+        run: |
+          # The pack is encrypted; only the SEFIM_KNOWLEDGE_KEY holder can read it.
+          # Without it the server starts with no business knowledge, which is a
+          # valid but incomplete release, so it is only a warning.
+          $pack = 'sefim-ai-mcp/knowledge.pack'
+          if (Test-Path $pack) {
+            $header = [System.Text.Encoding]::ASCII.GetString([byte[]](Get-Content $pack -AsByteStream -TotalCount 8))
+            if ($header -ne 'SEFIMKP1') { throw "knowledge.pack does not carry the SEFIMKP1 header (found: $header)." }
+            "allow-missing=false" | Out-File $env:GITHUB_OUTPUT -Append
+            Write-Host "knowledge.pack: $((Get-Item $pack).Length) bytes"
+          }
+          else {
+            "allow-missing=true" | Out-File $env:GITHUB_OUTPUT -Append
+            Write-Host "::warning::knowledge.pack is missing; the setup will ship without business knowledge."
+          }
+
       - name: Publish win-x64
         shell: pwsh
         run: |
-          # knowledge.pack is not in source control; it is added to the payload
-          # separately when a customer specific pack is built.
           dotnet publish sefim-ai-mcp/sefim-ai-mcp.csproj `
             -c Release -r win-x64 --self-contained true `
-            -p:AllowMissingKnowledgePack=true `
+            -p:AllowMissingKnowledgePack=${{ steps.pack.outputs.allow-missing }} `
             -p:PackageVersion=${{ steps.version.outputs.version }} `
             -o artifacts/win-x64
 
@@ -79,9 +96,16 @@ jobs:
           if (-not (Test-Path $exe)) { throw "Publish output is missing $exe" }
           if (-not (Test-Path 'artifacts/win-x64/appsettings.json')) { throw 'appsettings.json is missing from the payload.' }
 
-          # Plaintext knowledge must never be shipped inside the setup.
-          $leak = Get-ChildItem artifacts/win-x64 -Recurse -Include '*.template.md' -ErrorAction SilentlyContinue
+          # Knowledge ships only inside the encrypted pack, never as markdown.
+          $leak = Get-ChildItem artifacts/win-x64 -Recurse -Include '*.md' -ErrorAction SilentlyContinue
           if ($leak) { throw "Plaintext knowledge in payload: $($leak.FullName -join ', ')" }
+
+          if ('${{ steps.pack.outputs.allow-missing }}' -eq 'false') {
+            $packed = 'artifacts/win-x64/knowledge.pack'
+            if (-not (Test-Path $packed)) { throw 'knowledge.pack did not reach the publish output.' }
+            $header = [System.Text.Encoding]::ASCII.GetString([byte[]](Get-Content $packed -AsByteStream -TotalCount 8))
+            if ($header -ne 'SEFIMKP1') { throw 'Published knowledge.pack is not encrypted.' }
+          }
 
           Get-ChildItem artifacts/win-x64 | Select-Object Name, Length | Format-Table
 
