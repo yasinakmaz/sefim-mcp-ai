@@ -51,6 +51,12 @@ function Assert-True {
 # ---------------------------------------------------------------------------
 
 $root = Join-Path $env:TEMP ("sefim-installer-test-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+New-Item -ItemType Directory -Path $root -Force | Out-Null
+
+# TEMP can be an 8.3 short path (C:\Users\RUNNER~1\...) while the helper reports the
+# expanded name, so the expected values are built from the expanded form as well.
+$root = (Get-Item -LiteralPath $root).FullName
+
 $installDir = Join-Path $root 'Program Files\OZFILIZYAZILIM\SEFIM-MCP\1.0.0'
 $oldInstallDir = Join-Path $root 'Program Files\OZFILIZYAZILIM\SEFIM-MCP\0.9.0'
 $sefimDir = Join-Path $root 'Vega\Sefim'
