@@ -10,7 +10,13 @@
 
 Unicode true
 ManifestDPIAware true
-Target amd64-unicode
+; The stub stays x86-unicode: it runs on every x64 Windows, and not every NSIS
+; distribution ships the amd64 stub. 32 bit Windows is refused in .onInit, and
+; the 64 bit registry view is selected explicitly, so the stub architecture
+; carries no behaviour. Build with /DTARGET_AMD64 to produce a 64 bit stub.
+!ifdef TARGET_AMD64
+    Target amd64-unicode
+!endif
 SetCompressor /SOLID lzma
 
 !include "MUI2.nsh"
