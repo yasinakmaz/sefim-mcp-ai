@@ -497,3 +497,13 @@ $RECYCLE.BIN/
 artifacts/
 SefimMcpSetup-*.exe
 installer/*.exe
+
+# QtIFW installer build artifacts
+/.qtifw-tools/
+/artifacts/
+/SefimMcpSetup-*
+installer/qtifw/packages/com.ozfiliz.sefimmcp/data/
+
+# Negations: allow meta/ files to be tracked despite **/[Pp]ackages/* rule
+!installer/qtifw/packages/com.ozfiliz.sefimmcp/meta/
+!installer/qtifw/packages/com.ozfiliz.sefimmcp/meta/**
