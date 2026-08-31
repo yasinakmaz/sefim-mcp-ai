@@ -80,6 +80,7 @@
         <Using Include="SefimMcp.Infrastructure.Metadata" />
         <Using Include="SefimMcp.Knowledge.Models" />
         <Using Include="SefimMcp.Knowledge.Authoring" />
+        <Using Include="SefimMcp.Setup" />
         <Using Include="SefimMcp.Knowledge.Runtime" />
         <Using Include="SefimMcp.Mcp.Resources" />
         <Using Include="SefimMcp.Mcp.Dtos" />

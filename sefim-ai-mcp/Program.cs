@@ -12,6 +12,9 @@ builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, relo
 if (await KnowledgeCommandRunner.TryRunAsync(args, builder.Configuration, CancellationToken.None))
     return;
 
+if (await SetupCommandRunner.TryRunAsync(args, CancellationToken.None))
+    return;
+
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
 try
