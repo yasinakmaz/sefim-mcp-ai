@@ -92,7 +92,10 @@ public static class SetupCommandRunner
 
         var userId = GetOption(args, "--user-id");
         var password = GetOption(args, "--password");
+        var sefimDir = GetOption(args, "--sefim-dir");
         var proImages = GetOption(args, "--pro-images");
+        if (string.IsNullOrWhiteSpace(proImages))
+            proImages = SefimDetection.FindProImages(sefimDir);
         var toolProfile = GetOption(args, "--tool-profile") ?? "full";
         var serverKey = GetOption(args, "--server-key") ?? "sefim";
         var host = GetOption(args, "--host");
