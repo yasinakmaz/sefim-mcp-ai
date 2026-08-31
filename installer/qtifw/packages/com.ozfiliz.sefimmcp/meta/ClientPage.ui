@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ClientPage</class>
+ <widget class="QWidget" name="ClientPage">
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QLabel" name="introLabel">
+     <property name="text">
+      <string>Sunucu, seçtiğiniz uygulamanın yapılandırma dosyasına eklenir. Dosyadaki diğer sunucular ve ayarlar korunur.</string>
+     </property>
+     <property name="wordWrap"><bool>true</bool></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="claudeRadio">
+     <property name="text"><string>Claude Desktop kullan</string></property>
+     <property name="checked"><bool>true</bool></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="chatgptRadio">
+     <property name="text"><string>ChatGPT Desktop kullan</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="noteLabel">
+     <property name="text">
+      <string>Not: Değişikliğin etkili olması için kurulum bittikten sonra seçtiğiniz uygulamayı tamamen kapatıp yeniden açın.</string>
+     </property>
+     <property name="wordWrap"><bool>true</bool></property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+</ui>

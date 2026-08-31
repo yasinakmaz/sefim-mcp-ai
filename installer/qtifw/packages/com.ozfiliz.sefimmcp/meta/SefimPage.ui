@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SefimPage</class>
+ <widget class="QWidget" name="SefimPage">
+  <layout class="QGridLayout">
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="sefimDirLabel"><property name="text"><string>Şefim kurulum klasörü (varsa)</string></property></widget>
+   </item>
+   <item row="1" column="0" colspan="2"><widget class="QLineEdit" name="sefimDirEdit"/></item>
+   <item row="1" column="2"><widget class="QPushButton" name="sefimDirBrowse"><property name="text"><string>Gözat...</string></property></widget></item>
+
+   <item row="2" column="0" colspan="3">
+    <widget class="QLabel" name="imagesLabel"><property name="text"><string>Görseller (proimages) klasörü</string></property></widget>
+   </item>
+   <item row="3" column="0" colspan="2"><widget class="QLineEdit" name="imagesEdit"/></item>
+   <item row="3" column="2"><widget class="QPushButton" name="imagesBrowse"><property name="text"><string>Gözat...</string></property></widget></item>
+
+   <item row="4" column="0"><widget class="QLabel" name="serverLabel"><property name="text"><string>Sunucu *</string></property></widget></item>
+   <item row="4" column="1" colspan="2"><widget class="QLineEdit" name="serverEdit"/></item>
+
+   <item row="5" column="0"><widget class="QLabel" name="databaseLabel"><property name="text"><string>Veritabanı *</string></property></widget></item>
+   <item row="5" column="1" colspan="2"><widget class="QLineEdit" name="databaseEdit"/></item>
+
+   <item row="6" column="0"><widget class="QLabel" name="userLabel"><property name="text"><string>Kullanıcı (opsiyonel)</string></property></widget></item>
+   <item row="6" column="1" colspan="2"><widget class="QLineEdit" name="userEdit"/></item>
+
+   <item row="7" column="0"><widget class="QLabel" name="passwordLabel"><property name="text"><string>Parola (opsiyonel)</string></property></widget></item>
+   <item row="7" column="1" colspan="2"><widget class="QLineEdit" name="passwordEdit"><property name="echoMode"><enum>QLineEdit::Password</enum></property></widget></item>
+
+   <item row="8" column="0" colspan="3">
+    <widget class="QLabel" name="hintLabel">
+     <property name="text"><string>Kullanıcı ve parola boş bırakılırsa Integrated Security kullanılır. Sunucu ve veritabanı zorunludur.</string></property>
+     <property name="wordWrap"><bool>true</bool></property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+</ui>
