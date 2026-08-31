@@ -8,7 +8,7 @@ Yeni bir tabloyu AI'ya öğretmek için:
 4. Workflow ve kural için ilgili template'i `knowledge/private/workflows/` veya `knowledge/private/business-rules/` altına kopyalayın.
 5. `dotnet run --project sefim-ai-mcp -- knowledge validate` çalıştırın.
 6. `dotnet run --project sefim-ai-mcp -- knowledge stats` ile belge sayısını, section sayısını ve eksik `summary`/`aliases` alanlarını görün.
-7. `SEFIM_KNOWLEDGE_KEY` tanımlıyken `dotnet run --project sefim-ai-mcp -- knowledge pack` çalıştırın.
+7. `dotnet run --project sefim-ai-mcp -- knowledge pack` çalıştırın. Pack, binary'ye gömülü key ile şifrelenir; `SEFIM_KNOWLEDGE_KEY` tanımlıysa onun yerine o kullanılır ve sunucu bu pack'i yalnızca aynı değişken tanımlıyken açabilir.
 
 **Template'lere gerçek içerik yazmayın.** `knowledge/templates/` NuGet paketine düz metin olarak girer; gerçek iş bilgisi yalnızca `knowledge/private/` altında yaşar ve şifreli pack'e girer. Build, template içine yazılmış içeriği `SEFIM001` hatasıyla reddeder.
 

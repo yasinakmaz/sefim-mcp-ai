@@ -57,7 +57,9 @@ public static class KnowledgeCommandRunner
             return;
         }
 
-        var provider = new EnvironmentKnowledgeKeyProvider("SEFIM_KNOWLEDGE_KEY");
+        // Falls back to the key compiled into the server, so a pack produced here always
+        // opens in a shipped build. SEFIM_KNOWLEDGE_KEY still overrides it when set.
+        var provider = new EmbeddedKnowledgeKeyProvider();
         if (!provider.TryGetKey(out var key))
         {
             Console.Error.WriteLine("SEFIM_KNOWLEDGE_KEY must contain a base64-encoded 32-byte key before packing.");

@@ -102,7 +102,6 @@ Var SqlServer
 Var SqlDatabase
 Var SqlUser
 Var SqlPassword
-Var KnowledgeKey
 Var Status
 Var Message
 Var HostConfigPath
@@ -116,7 +115,6 @@ Var TxtServer
 Var TxtDatabase
 Var TxtUser
 Var TxtPassword
-Var TxtKnowledgeKey
 Var LabelSefimState
 Var LabelTestState
 
@@ -188,7 +186,6 @@ Function WriteHelperInput
   FileWriteUTF16LE $0 "database=$SqlDatabase$\r$\n"
   FileWriteUTF16LE $0 "userid=$SqlUser$\r$\n"
   FileWriteUTF16LE $0 "password=$SqlPassword$\r$\n"
-  FileWriteUTF16LE $0 "knowledgekey=$KnowledgeKey$\r$\n"
   FileWriteUTF16LE $0 "serverkey=${SERVER_KEY}$\r$\n"
   FileClose $0
 FunctionEnd
@@ -433,20 +430,15 @@ Function SefimPageCreate
   ${NSD_CreatePassword} 24% 89u 76% 12u "$SqlPassword"
   Pop $TxtPassword
 
-  ${NSD_CreateLabel} 0 104u 24% 12u "Knowledge key"
-  Pop $0
-  ${NSD_CreateText} 24% 102u 76% 12u "$KnowledgeKey"
-  Pop $TxtKnowledgeKey
-
-  ${NSD_CreateButton} 0 117u 32% 12u "Yeniden algıla"
+  ${NSD_CreateButton} 0 106u 32% 12u "Yeniden algıla"
   Pop $0
   ${NSD_OnClick} $0 OnDetectClick
 
-  ${NSD_CreateButton} 34% 117u 32% 12u "Bağlantıyı test et"
+  ${NSD_CreateButton} 34% 106u 32% 12u "Bağlantıyı test et"
   Pop $0
   ${NSD_OnClick} $0 OnTestClick
 
-  ${NSD_CreateLabel} 0 131u 100% 12u ""
+  ${NSD_CreateLabel} 0 120u 100% 20u ""
   Pop $LabelTestState
 
   Call RefreshSefimState
@@ -469,7 +461,6 @@ Function ReadSefimPageFields
   ${NSD_GetText} $TxtDatabase $SqlDatabase
   ${NSD_GetText} $TxtUser $SqlUser
   ${NSD_GetText} $TxtPassword $SqlPassword
-  ${NSD_GetText} $TxtKnowledgeKey $KnowledgeKey
 FunctionEnd
 
 ; Re-reads connectionstring.txt and proimages for the folder currently typed in.

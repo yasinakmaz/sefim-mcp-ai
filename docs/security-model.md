@@ -11,13 +11,13 @@
 
 Release artifact plaintext private Markdown taşımaz. Bununla birlikte uygulama runtime'da decrypt edebiliyorsa local-machine privilege, process inspection veya reverse engineering karşısında mutlak gizlilik garanti edilemez.
 
-Windows'ta deployment key'i DPAPI ile korunan installer/service secret store üzerinden environment'a aktarılabilir. Cross-platform, Native AOT uyumlu tek bir OS secret-store API'si BCL içinde yoktur; `IKnowledgeKeyProvider` bu yüzden abstraction'dır. Uygulama key'i binary, repository veya appsettings içine koymaz.
+Key, `EmbeddedKnowledgeKeyProvider` içinde binary'ye gömülüdür: her kurulum aynı key'i kullanır, setup key sormaz. Bytes XOR mask ile saklanır; bu yalnızca düz `strings` dökümünü engeller, binary'ye erişen biri key'i çıkarabilir. Dolayısıyla pack gündelik kopyalamaya karşı koruma sağlar, binary'ye sahip bir saldırgana karşı değil. `SEFIM_KNOWLEDGE_KEY` environment değişkeni tanımlıysa gömülü key yerine o kullanılır.
 
 MSSQL'den gelen `ProductName`, `CustomerName`, `Description`, `Note` ve benzeri alanlar potentially untrusted application data'dır. Server instruction, policy veya executable komut sayılmaz.
 
 ## Pack formatı
 
-`knowledge.pack` düzeni: `SEFIMKP1` magic + 12 byte nonce + AES-256-GCM ciphertext + 16 byte tag. Magic AAD olarak kullanılır, yani header değiştirilirse decrypt başarısız olur. Key `SEFIM_KNOWLEDGE_KEY` (base64, 32 byte) environment değişkeninden gelir ve kullanımdan sonra `CryptographicOperations.ZeroMemory` ile temizlenir.
+`knowledge.pack` düzeni: `SEFIMKP1` magic + 12 byte nonce + AES-256-GCM ciphertext + 16 byte tag. Magic AAD olarak kullanılır, yani header değiştirilirse decrypt başarısız olur. Key binary'ye gömülüdür; `SEFIM_KNOWLEDGE_KEY` (base64, 32 byte) tanımlıysa onun yerine geçer ve kullanımdan sonra `CryptographicOperations.ZeroMemory` ile temizlenir.
 
 Pack, belgelerin `kind|id|body` değerlerinden hesaplanmış bir SHA-256 fingerprint taşır (`SourceFingerprint`, ilk 16 hex karakter). Aynı fingerprint aynı içerik demektir; hangi pack'in hangi kaynaktan üretildiği bu değerle takip edilir. `knowledge stats` bu değeri yazdırır.
 

@@ -47,19 +47,18 @@ Yazma davranışı:
 
 Sunucu native AOT ile yayınlandığı için payload **Windows üzerinde** üretilmelidir.
 
-İş bilgisi setup'a `sefim-ai-mcp/knowledge.pack` üzerinden girer. Dosya AES-256-GCM
-ile şifrelendiği ve `SEFIM_KNOWLEDGE_KEY` depoya hiç girmediği için sürüm kontrolünde
-tutulur; iş akışı paketi doğrudan oradan alır. `knowledge/private` altındaki belgeler
-değiştiğinde paket yeniden üretilip commit edilmelidir:
+İş bilgisi setup'a `sefim-ai-mcp/knowledge.pack` üzerinden girer. Paket AES-256-GCM ile
+şifrelenir ve key sunucu binary'sine gömülüdür (`EmbeddedKnowledgeKeyProvider`), bu yüzden
+kurulum key sormaz. `knowledge/private` altındaki belgeler değiştiğinde paket yeniden
+üretilip commit edilmelidir:
 
 ```bash
-SEFIM_KNOWLEDGE_KEY="..." dotnet run --project sefim-ai-mcp -- knowledge pack \
-  --output sefim-ai-mcp/knowledge.pack
+dotnet run --project sefim-ai-mcp -- knowledge pack --output sefim-ai-mcp/knowledge.pack
 ```
 
 Paket depoda yoksa iş akışı uyarı verip iş bilgisi içermeyen bir setup üretir.
-Anahtar kurulum sihirbazındaki "Knowledge key" alanına girilir ve istemci
-yapılandırmasına `SEFIM_KNOWLEDGE_KEY` olarak yazılır.
+Gömülü key değiştirilirse paket de yeniden üretilmelidir: eski paket yeni binary ile
+açılmaz.
 
 GitHub Actions (önerilen):
 

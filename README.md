@@ -14,7 +14,7 @@ SQL bağlantısı `appsettings.json` içindeki `SqlService:ConnectionString` ala
 }
 ```
 
-Knowledge pack kullanılıyorsa aynı host process'inde `SEFIM_KNOWLEDGE_KEY` (base64 encoded 32-byte AES key) tanımlı olmalıdır.
+Knowledge pack key'i binary'ye gömülüdür; ek bir environment değişkeni gerekmez.
 
 ```bash
 dotnet restore
@@ -28,7 +28,7 @@ MCP server stdout'u yalnızca JSON-RPC stdio transport içindir. Tanı logları 
 
 | Değişken | Zorunlu | Açıklama |
 | --- | --- | --- |
-| `SEFIM_KNOWLEDGE_KEY` | knowledge pack varsa | Base64 encoded 32-byte AES key. |
+| `SEFIM_KNOWLEDGE_KEY` | hayır | Base64 encoded 32-byte AES key. Yalnızca gömülü key'i geçersiz kılmak için; pack de aynı key ile üretilmelidir. |
 | `SEFIM_TOOL_PROFILE` | hayır | `full` (varsayılan) veya `core`. |
 
 `appsettings.json` publish çıktısına kopyalanır ve `SqlService:ConnectionString` değerini oradan alır. Windows kurulumunda bu dosyayı setup üretir (bkz. [installer/README.md](installer/README.md)). `appsettings.Local.json` yayınlanmaz.
@@ -46,7 +46,6 @@ export SEFIM_TOOL_PROFILE=core
 ## Knowledge
 
 ```bash
-export SEFIM_KNOWLEDGE_KEY="$(openssl rand -base64 32)"
 dotnet run --project sefim-ai-mcp -- knowledge validate
 dotnet run --project sefim-ai-mcp -- knowledge stats
 dotnet run --project sefim-ai-mcp -- knowledge pack

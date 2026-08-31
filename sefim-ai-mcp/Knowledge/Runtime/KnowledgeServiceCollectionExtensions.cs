@@ -12,7 +12,7 @@ public static class KnowledgeServiceCollectionExtensions
         var packPath = Path.Combine(AppContext.BaseDirectory, "knowledge.pack");
         var keyVariable = configuration["Knowledge:KeyEnvironmentVariable"] ?? "SEFIM_KNOWLEDGE_KEY";
         services.AddSingleton(new KnowledgePackOptions(packPath, keyVariable));
-        services.AddSingleton<IKnowledgeKeyProvider>(_ => new EnvironmentKnowledgeKeyProvider(keyVariable));
+        services.AddSingleton<IKnowledgeKeyProvider>(_ => new EmbeddedKnowledgeKeyProvider(keyVariable));
         services.AddSingleton<IKnowledgeService, KnowledgeService>();
         return services;
     }

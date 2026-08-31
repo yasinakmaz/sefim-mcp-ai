@@ -3,6 +3,7 @@ using ModelContextProtocol.Server;
 using SefimMcp.Knowledge.Authoring;
 using SefimMcp.Knowledge.Models;
 using SefimMcp.Knowledge.Runtime;
+using SefimMcp.Knowledge.Security;
 using Xunit;
 
 namespace SefimMcp.Tests;
@@ -43,6 +44,21 @@ public sealed class KnowledgeSecurityTests
         var root = FindRepositoryRoot();
         var configuration = File.ReadAllText(Path.Combine(root, "sefim-ai-mcp", "appsettings.json"));
         Assert.DoesNotContain("Password=", configuration, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void Embedded_key_opens_the_shipped_pack()
+    {
+        // The pack in source control has to match the key compiled into the server:
+        // repacking after a key change is easy to forget and only shows up at runtime.
+        var packPath = Path.Combine(FindRepositoryRoot(), "sefim-ai-mcp", "knowledge.pack");
+        Assert.True(File.Exists(packPath), $"knowledge.pack is missing: {packPath}");
+
+        Assert.True(new EmbeddedKnowledgeKeyProvider(environmentVariable: null).TryGetKey(out var key));
+        Assert.Equal(32, key.Length);
+
+        var pack = KnowledgePackCodec.Decrypt(File.ReadAllBytes(packPath), key);
+        Assert.NotEmpty(pack.Documents);
     }
 
     [Fact]

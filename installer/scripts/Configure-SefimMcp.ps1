@@ -35,7 +35,6 @@ param(
     [string]$Database,
     [string]$UserId,
     [string]$Password,
-    [string]$KnowledgeKey,
     [string]$ToolProfile = 'full',
     [string]$ServerKey = 'sefim',
     [string]$ExeName = 'sefim-ai-mcp.exe',
@@ -102,7 +101,6 @@ function Import-InputFile {
             'database'     { $script:Database = $value }
             'userid'       { $script:UserId = $value }
             'password'     { $script:Password = $value }
-            'knowledgekey' { $script:KnowledgeKey = $value }
             'toolprofile'  { if ($value) { $script:ToolProfile = $value } }
             'serverkey'    { if ($value) { $script:ServerKey = $value } }
         }
@@ -428,13 +426,11 @@ function Update-AppSettings {
 # ---------------------------------------------------------------------------
 
 function Get-ServerEntry {
-    param([string]$ExePath, [string]$ToolProfile, [string]$KnowledgeKey)
+    param([string]$ExePath, [string]$ToolProfile)
 
     $environment = New-Object PSObject
+    # No knowledge key here: it is compiled into the server binary.
     Set-JsonProperty -Object $environment -Name 'SEFIM_TOOL_PROFILE' -Value $ToolProfile
-    if ($KnowledgeKey) {
-        Set-JsonProperty -Object $environment -Name 'SEFIM_KNOWLEDGE_KEY' -Value $KnowledgeKey
-    }
 
     # "args" is omitted on purpose: the server takes no command line arguments, and an
     # empty array is the one value ConvertTo-Json in PowerShell 5.1 is unreliable about.
@@ -445,7 +441,7 @@ function Get-ServerEntry {
 }
 
 function Update-HostConfig {
-    param([string]$Path, [string]$Key, [string]$ExePath, [string]$ToolProfile, [string]$KnowledgeKey)
+    param([string]$Path, [string]$Key, [string]$ExePath, [string]$ToolProfile)
 
     $config = Read-JsonFile -Path $Path
     $servers = Get-OrCreateSection -Object $config -Name 'mcpServers'
@@ -461,7 +457,7 @@ function Update-HostConfig {
         }
     }
 
-    Set-JsonProperty -Object $servers -Name $Key -Value (Get-ServerEntry -ExePath $ExePath -ToolProfile $ToolProfile -KnowledgeKey $KnowledgeKey)
+    Set-JsonProperty -Object $servers -Name $Key -Value (Get-ServerEntry -ExePath $ExePath -ToolProfile $ToolProfile)
     Save-JsonFile -Path $Path -Object $config
 }
 
@@ -495,7 +491,7 @@ function Remove-HostConfigEntry {
 # ---------------------------------------------------------------------------
 
 function Update-CodexConfig {
-    param([string]$Path, [string]$Key, [string]$ExePath, [string]$ToolProfile, [string]$KnowledgeKey, [switch]$Remove)
+    param([string]$Path, [string]$Key, [string]$ExePath, [string]$ToolProfile, [switch]$Remove)
 
     if (-not (Test-Path -LiteralPath $Path)) { return }
 
@@ -512,9 +508,7 @@ function Update-CodexConfig {
         $block = "[mcp_servers.$Key]`r`n" +
                  "command = `"$escapedExe`"`r`n" +
                  "args = []`r`n" +
-                 "env = { SEFIM_TOOL_PROFILE = `"$ToolProfile`""
-        if ($KnowledgeKey) { $block += ", SEFIM_KNOWLEDGE_KEY = `"$KnowledgeKey`"" }
-        $block += " }`r`n"
+                 "env = { SEFIM_TOOL_PROFILE = `"$ToolProfile`" }`r`n"
         $text = $text.TrimEnd() + "`r`n`r`n" + $block
     }
 
@@ -597,13 +591,13 @@ function Invoke-Configure {
     Write-Pair 'imagelocation' $imageLocation
 
     $configPath = Resolve-HostConfigPath -App $HostApp
-    Update-HostConfig -Path $configPath -Key $ServerKey -ExePath $exePath -ToolProfile $ToolProfile -KnowledgeKey $KnowledgeKey
+    Update-HostConfig -Path $configPath -Key $ServerKey -ExePath $exePath -ToolProfile $ToolProfile
     Write-Pair 'hostconfig' $configPath
 
     if ($HostApp -eq 'chatgpt') {
         $codex = Get-CodexConfigPath
         if ($codex) {
-            Update-CodexConfig -Path $codex -Key $ServerKey -ExePath $exePath -ToolProfile $ToolProfile -KnowledgeKey $KnowledgeKey
+            Update-CodexConfig -Path $codex -Key $ServerKey -ExePath $exePath -ToolProfile $ToolProfile
         }
     }
 
@@ -621,7 +615,7 @@ function Invoke-Remove {
 
     $codex = Get-CodexConfigPath
     if ($codex) {
-        Update-CodexConfig -Path $codex -Key $ServerKey -ExePath '' -ToolProfile $ToolProfile -KnowledgeKey '' -Remove
+        Update-CodexConfig -Path $codex -Key $ServerKey -ExePath '' -ToolProfile $ToolProfile -Remove
     }
 
     Write-Pair 'status' 'ok'
