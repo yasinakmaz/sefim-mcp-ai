@@ -4,6 +4,11 @@ var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
     ContentRootPath = AppContext.BaseDirectory
 });
 
+// Credentials stay out of source control: the tracked appsettings.json ships with an
+// empty connection string, the installer writes the real one, and a developer keeps
+// theirs in appsettings.Local.json, which is git-ignored and never published.
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false);
+
 if (await KnowledgeCommandRunner.TryRunAsync(args, builder.Configuration, CancellationToken.None))
     return;
 
