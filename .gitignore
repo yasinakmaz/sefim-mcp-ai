@@ -13,6 +13,9 @@ knowledge/private/**
 !knowledge/private/.gitkeep
 knowledge.pack
 *.knowledge.pack
+# The shipped pack is AES-256-GCM ciphertext and the key never enters the repo,
+# so it is tracked: the release build takes it straight from source control.
+!sefim-ai-mcp/knowledge.pack
 
 # User-specific files
 *.rsuser
