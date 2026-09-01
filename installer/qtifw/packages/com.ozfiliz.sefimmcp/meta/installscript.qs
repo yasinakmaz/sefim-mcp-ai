@@ -1,5 +1,24 @@
+// QtIFW's own 4.7 docs: "@ApplicationsDirUser@ ... is useful on macOS, on other platforms it
+// is the same as @ApplicationsDir@" — i.e. /opt on Linux and C:\Program Files on Windows, both
+// of which need root/admin and make a headless install abort with "Cannot elevate access
+// rights". This installer is per-user by design, so resolve a genuinely per-user root instead.
+function defaultTargetDir()
+{
+    var version = installer.value("ProductVersion");
+    if (systemInfo.kernelType === "winnt")
+        return installer.value("HomeDir") + "/AppData/Local/Programs/SefimMcp/" + version;
+    if (systemInfo.kernelType === "darwin")
+        return installer.value("HomeDir") + "/Applications/SefimMcp/" + version;
+    return installer.value("HomeDir") + "/.local/share/SefimMcp/" + version;
+}
+
 function Component()
 {
+    // Only while installing: in maintenance/uninstall mode TargetDir must stay whatever the
+    // original install recorded.
+    if (installer.isInstaller())
+        installer.setValue("TargetDir", defaultTargetDir());
+
     installer.addWizardPage(component, "ClientPage", QInstaller.TargetDirectory);
     installer.addWizardPage(component, "SefimPage", QInstaller.TargetDirectory);
 }
@@ -101,7 +120,17 @@ Component.prototype.createOperations = function()
     // so @TargetDir@/<exeName> already exists on disk. Non-fatal by design: a configuration
     // failure must not roll back a successful file install, matching the old NSIS behavior
     // (Section only showed a MessageBox warning, it never aborted).
-    component.addOperation("Execute", ["{0,1}"].concat(args));
+    //
+    // The UNDOEXECUTE clause is part of the SAME operation: at uninstall time QtIFW runs the
+    // command after the separator token, which strips the MCP entry from the client config
+    // before the extracted binary is deleted. The leading "{0,1}" exit-code tolerance applies
+    // to both directions, so a failed cleanup never blocks the uninstall.
+    component.addOperation("Execute", ["{0,1}"].concat(args).concat([
+        "UNDOEXECUTE",
+        "@TargetDir@/" + exeName, "setup", "remove",
+        "--host", host,
+        "--server-key", "sefim"
+    ]));
 }
 
 function Controller() {}

@@ -7,25 +7,40 @@ public static class SetupCommandRunner
         if (args.Length < 2 || !args[0].Equals("setup", StringComparison.OrdinalIgnoreCase))
             return false;
 
-        switch (args[1].ToLowerInvariant())
+        var mode = args[1].ToLowerInvariant();
+        if (mode is not ("detect" or "test" or "configure" or "remove"))
         {
-            case "detect":
-                RunDetect();
-                return true;
-            case "test":
-                await RunTestAsync(args, ct);
-                return true;
-            case "configure":
-                RunConfigure(args);
-                return true;
-            case "remove":
-                RunRemove(args);
-                return true;
-            default:
-                Console.Error.WriteLine("Usage: setup detect | setup test | setup configure | setup remove");
-                Environment.ExitCode = 2;
-                return true;
+            Console.Error.WriteLine("Usage: setup detect | setup test | setup configure | setup remove");
+            Environment.ExitCode = 2;
+            return true;
         }
+
+        // Every known mode must exit 0 or 1: the installer's Execute operation only tolerates
+        // "{0,1}", and a signal-level crash there reopens the infinite Retry/Ignore/Cancel loop.
+        try
+        {
+            switch (mode)
+            {
+                case "detect":
+                    RunDetect();
+                    break;
+                case "test":
+                    await RunTestAsync(args, ct);
+                    break;
+                case "configure":
+                    await RunConfigureAsync(args);
+                    break;
+                case "remove":
+                    RunRemove(args);
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Fail(ex.Message);
+        }
+
+        return true;
     }
 
     private static void RunDetect()
@@ -65,7 +80,7 @@ public static class SetupCommandRunner
             Environment.ExitCode = 1;
     }
 
-    private static void RunConfigure(string[] args)
+    private static async Task RunConfigureAsync(string[] args)
     {
         var installDir = GetOption(args, "--install-dir");
         if (string.IsNullOrWhiteSpace(installDir))
@@ -76,6 +91,23 @@ public static class SetupCommandRunner
 
         var server = GetOption(args, "--server");
         var database = GetOption(args, "--database");
+        var userId = GetOption(args, "--user-id");
+        var password = GetOption(args, "--password");
+        var sefimDir = GetOption(args, "--sefim-dir");
+
+        // The wizard collects the connection fields as plain text (no pre-install process
+        // execution is possible), so 'setup detect' never runs before this point. Fall back to
+        // reading Şefim's own connectionstring.txt for whatever the caller left blank.
+        if ((string.IsNullOrWhiteSpace(server) || string.IsNullOrWhiteSpace(database))
+            && !string.IsNullOrWhiteSpace(sefimDir))
+        {
+            var detected = SefimDetection.ReadConnectionString(sefimDir);
+            if (string.IsNullOrWhiteSpace(server)) server = detected.Server;
+            if (string.IsNullOrWhiteSpace(database)) database = detected.Database;
+            if (string.IsNullOrWhiteSpace(userId)) userId = detected.UserId;
+            if (string.IsNullOrWhiteSpace(password)) password = detected.Password;
+        }
+
         if (string.IsNullOrWhiteSpace(server) || string.IsNullOrWhiteSpace(database))
         {
             Fail("--server ve --database gereklidir.");
@@ -90,9 +122,6 @@ public static class SetupCommandRunner
             return;
         }
 
-        var userId = GetOption(args, "--user-id");
-        var password = GetOption(args, "--password");
-        var sefimDir = GetOption(args, "--sefim-dir");
         var proImages = GetOption(args, "--pro-images");
         if (string.IsNullOrWhiteSpace(proImages))
             proImages = SefimDetection.FindProImages(sefimDir);
@@ -101,6 +130,21 @@ public static class SetupCommandRunner
         var host = GetOption(args, "--host");
 
         var connectionString = SefimDetection.BuildConnectionString(server, database, userId, password);
+
+        // Informational only: the install log should show whether the DB is reachable, but a
+        // failed probe (VPN down, SQL service not started yet, malformed server name) must never
+        // fail the install — hence the local catch, which also keeps it out of the top-level
+        // handler in TryRunAsync that would otherwise turn it into status=error.
+        try
+        {
+            var sqlTest = await SqlConnectionTester.TestAsync(server, database, userId, password, CancellationToken.None);
+            WritePair("sqltest", sqlTest.Success ? "ok" : $"warning: {sqlTest.Message}");
+        }
+        catch (Exception ex)
+        {
+            WritePair("sqltest", $"warning: {ex.Message}");
+        }
+
         AppSettingsWriter.Update(Path.Combine(installDir, "appsettings.json"), connectionString, proImages);
         WritePair("appsettings", Path.Combine(installDir, "appsettings.json"));
 

@@ -102,7 +102,7 @@ jobs:
           [[ "${{ matrix.rid }}" == win-* ]] && exe="${exe}.exe"
           [[ -f "$exe" ]] || { echo "Publish output is missing $exe" >&2; exit 1; }
           [[ -f "artifacts/${{ matrix.rid }}/appsettings.json" ]] || { echo "appsettings.json missing" >&2; exit 1; }
-          if find "artifacts/${{ matrix.rid }}" -iname '*.md' | grep -q .; then
+          if [ -n "$(find "artifacts/${{ matrix.rid }}" -iname '*.md' -print -quit)" ]; then
             echo "Plaintext knowledge in payload:" >&2
             find "artifacts/${{ matrix.rid }}" -iname '*.md' >&2
             exit 1

@@ -12,11 +12,9 @@
     <TargetDir>@ApplicationsDirUser@/SefimMcp/@ProductVersion@</TargetDir>
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
     <AllowSpaceInPath>true</AllowSpaceInPath>
-    <RunProgram>@TargetDir@/sefim-ai-mcp</RunProgram>
-    <RunProgramArguments>
-        <Argument>--version</Argument>
-    </RunProgramArguments>
-    <RunProgramDescription>Kurulumu doğrula</RunProgramDescription>
+    <!-- Deliberately no RunProgram entry: sefim-ai-mcp has no version flag handler, so the
+         Finish page's "run now" checkbox would launch the real stdio MCP server, which then
+         blocks forever waiting on stdin. -->
     <StartMenuDir>Şefim MCP Server</StartMenuDir>
     <MaintenanceToolName>SefimMcpUninstall</MaintenanceToolName>
     <WizardStyle>Modern</WizardStyle>

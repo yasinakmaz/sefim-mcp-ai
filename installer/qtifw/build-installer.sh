@@ -44,7 +44,9 @@ fi
 # --- 2. Stamp version into package.xml / config.xml --------------------------
 work_dir="$(mktemp -d)"
 trap 'rm -rf "$work_dir"' EXIT
-cp -r "$qtifw_dir/config" "$qtifw_dir/packages" "$work_dir/"
+# assets/ must be copied too: config.xml references ../assets/* relative to its own
+# directory, so it has to stay a sibling of config/ inside the work dir.
+cp -r "$qtifw_dir/config" "$qtifw_dir/packages" "$qtifw_dir/assets" "$work_dir/"
 
 sed -i.bak "s/<Version>.*<\/Version>/<Version>${version}<\/Version>/" \
     "$work_dir/config/config.xml" "$work_dir/packages/com.ozfiliz.sefimmcp/meta/package.xml"
@@ -57,7 +59,7 @@ cp -r "$payload_dir"/. "$data_dir/"
 
 # Knowledge is only ever shipped as the encrypted knowledge.pack; refuse to package
 # plaintext markdown, mirroring the check the old windows-installer.yml workflow ran.
-if find "$data_dir" -iname '*.md' | grep -q .; then
+if [ -n "$(find "$data_dir" -iname '*.md' -print -quit)" ]; then
     echo "Refusing to package plaintext knowledge (*.md found under payload)." >&2
     find "$data_dir" -iname '*.md' >&2
     exit 1
@@ -72,5 +74,14 @@ esac
 output="$repo_root/SefimMcpSetup-${version}-${label}.${ext}"
 
 "$bc" --offline-only -c "$work_dir/config/config.xml" -p "$work_dir/packages" "$output"
+
+# On macOS binarycreator emits a .app *bundle directory*, which upload-artifact/gh-release
+# cannot carry as a single file (structure and exec bits are lost). Zip it so every platform
+# publishes exactly one file.
+if [[ "$ext" == "app" ]]; then
+    (cd "$(dirname "$output")" && zip -qry "$(basename "$output").zip" "$(basename "$output")")
+    rm -rf "$output"
+    output="${output}.zip"
+fi
 
 echo "Setup written to: $output"

@@ -4,16 +4,10 @@ namespace SefimMcp.Setup;
 /// never treated as authoritative without an existence check by the caller.</summary>
 public static class SetupPaths
 {
-    public static string InstallRoot(string productDir, string version)
-    {
-        var baseDir = OperatingSystem.IsWindows()
-            ? Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
-            : OperatingSystem.IsMacOS()
-                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Application Support")
-                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-
-        return Path.Combine(baseDir, "OZFILIZYAZILIM", productDir, version);
-    }
+    // NOTE: there is deliberately no InstallRoot() helper. The install location is owned
+    // entirely by QtIFW's <TargetDir>@ApplicationsDirUser@/SefimMcp/@ProductVersion@</TargetDir>
+    // in installer/qtifw/config/config.xml; a second, divergent C# definition of it was dead
+    // code that only documented a path the installer never used.
 
     public static IReadOnlyList<string> SefimDirCandidates()
     {

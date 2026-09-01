@@ -8,18 +8,23 @@ her platformun setup'ı yalnızca o platformda çalışır.
 
 ## Kurulum yeri
 
-Kurulum her zaman kullanıcı bazlıdır (`@ApplicationsDirUser@`), sistem geneline
-kurulmaz:
+Kurulum her zaman kullanıcı bazlıdır, sistem geneline kurulmaz. QtIFW'nin
+varsayılan `@ApplicationsDirUser@` değişkeni Linux ve Windows'ta `/opt` ve
+`C:\Program Files` ile aynı köke çözülür (root/admin ister), bu yüzden
+`installer/qtifw/packages/com.ozfiliz.sefimmcp/meta/installscript.qs` içindeki
+`Component()` kurulum başında `TargetDir`'i gerçekten kullanıcıya özel bir
+köke geçersiz kılar (`defaultTargetDir()`):
 
 | OS | Kurulum kökü |
 | --- | --- |
-| Windows | `%LOCALAPPDATA%\OZFILIZYAZILIM\SefimMcp\{SÜRÜM}` |
-| Linux | `~/.local/share/OZFILIZYAZILIM/SefimMcp/{SÜRÜM}` |
-| macOS | `~/Library/Application Support/OZFILIZYAZILIM/SefimMcp/{SÜRÜM}` |
+| Windows | `%LOCALAPPDATA%\Programs\SefimMcp\{SÜRÜM}` |
+| Linux | `~/.local/share/SefimMcp/{SÜRÜM}` |
+| macOS | `~/Applications/SefimMcp/{SÜRÜM}` |
 
-(`SefimMcp.Setup.SetupPaths.InstallRoot`, `.NET`'in `SpecialFolder.LocalApplicationData`
-karşılığını kullanır; QtIFW tarafında bu `TargetDir = @ApplicationsDirUser@/SefimMcp/@ProductVersion@`
-olarak `installer/qtifw/config/config.xml` içinde tanımlıdır.)
+Linux kökü, izole bir `HOME` ile yapılan gerçek headless kurulumla doğrulanmıştır.
+Windows ve macOS kökleri bu sandbox'ta çalıştırılamadığından kod okumasıyla
+(`installscript.qs`'teki `defaultTargetDir()`) türetilmiştir, gerçek bir
+kurulumla henüz doğrulanmamıştır.
 
 ## Kurulum akışı
 
@@ -161,7 +166,7 @@ git tag v0.1.0-beta && git push origin v0.1.0-beta
 
 | Dosya | İşlev |
 | --- | --- |
-| `qtifw/config/config.xml` | Setup meta bilgisi (isim, sürüm, ikonlar), `TargetDir` (`@ApplicationsDirUser@/SefimMcp/@ProductVersion@`), kurulum sonrası doğrulama komutu (`sefim-ai-mcp --version`) |
+| `qtifw/config/config.xml` | Setup meta bilgisi (isim, sürüm, ikonlar), varsayılan `TargetDir` (`@ApplicationsDirUser@/SefimMcp/@ProductVersion@`; `installscript.qs` bunu kurulum başında gerçek kullanıcı köküyle geçersiz kılar) |
 | `qtifw/packages/com.ozfiliz.sefimmcp/meta/package.xml` | Paket meta bilgisi, sihirbaz sayfalarının (`ClientPage.ui`, `SefimPage.ui`) ve `installscript.qs`'nin bağlanması |
 | `qtifw/packages/com.ozfiliz.sefimmcp/meta/installscript.qs` | Sihirbaz sayfa mantığı (varsayılan yol tahminleri, doğrulama, Gözat düğmeleri) ve kurulum sonunda `setup configure` çağrısını üreten `createOperations()` |
 | `qtifw/packages/com.ozfiliz.sefimmcp/meta/ClientPage.ui` | İstemci seçim sayfası (Claude Desktop / ChatGPT Desktop) |
