@@ -65,10 +65,10 @@ jobs:
           - os: ubuntu-24.04-arm
             rid: linux-arm64
             label: linux-arm64
-          - os: macos-13
+          - os: macos-15-large
             rid: osx-x64
             label: macos-x64
-          - os: macos-14
+          - os: macos-15
             rid: osx-arm64
             label: macos-arm64
     runs-on: ${{ matrix.os }}
@@ -113,6 +113,19 @@ jobs:
             header="$(head -c 8 "$packed")"
             [[ "$header" == "SEFIMKP1" ]] || { echo "Published knowledge.pack is not encrypted" >&2; exit 1; }
           fi
+
+      - name: Install Linux Qt runtime libraries
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          # binarycreator links against Qt's X11/xkb platform plugin at load time even when
+          # QT_QPA_PLATFORM=offscreen is set at runtime — ubuntu-latest/-arm runners don't ship
+          # these by default, which fails with "libxkbcommon-x11.so.0: cannot open shared object
+          # file". Confirmed via https://bugreports.qt.io/browse/QTIFW-2119 and the Qt forums.
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libxkbcommon-x11-0 libxcb-cursor0 \
+            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
+            libxcb-xinerama0 libxcb-xfixes0
 
       - name: Install Qt Installer Framework
         shell: bash
