@@ -115,7 +115,7 @@ jobs:
           fi
 
       - name: Install Linux Qt runtime libraries
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && matrix.rid != 'linux-arm64'
         shell: bash
         run: |
           # binarycreator links against Qt's X11/xkb platform plugin at load time even when
@@ -129,19 +129,11 @@ jobs:
             libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 \
             libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1
 
-      - name: Install x86-64 emulation
-        # Qt only publishes an x64 build of the Installer Framework tools for the generic
-        # "linux" aqtinstall host — there is no native linux-arm64 binarycreator. qemu-user-static
-        # registers a binfmt_misc handler so the x64 binary runs transparently under emulation.
-        if: runner.os == 'Linux' && runner.arch == 'ARM64'
-        shell: bash
-        run: |
-          sudo apt-get install -y --no-install-recommends qemu-user-static
-
       - name: Install Qt Installer Framework
+        if: matrix.rid != 'linux-arm64'
         shell: bash
         run: |
-          python3 -m pip install --quiet --upgrade aqtinstall
+          python3 -m pip install --quiet --upgrade aqtinstall --break-system-packages
           case "${{ matrix.os }}" in
             windows-*) host=windows ;;
             macos-*)   host=mac ;;
@@ -150,20 +142,74 @@ jobs:
           python3 -m aqt install-tool "$host" desktop tools_ifw --outputdir .qtifw-tools
 
       - name: Build installer
+        if: matrix.rid != 'linux-arm64'
         shell: bash
         run: |
           chmod +x installer/qtifw/build-installer.sh
           installer/qtifw/build-installer.sh "artifacts/${{ matrix.rid }}" "${{ needs.version.outputs.version }}" "${{ matrix.label }}"
 
       - name: Upload installer artifact
+        if: matrix.rid != 'linux-arm64'
         uses: actions/upload-artifact@v4
         with:
           name: SefimMcpSetup-${{ needs.version.outputs.version }}-${{ matrix.label }}
           path: SefimMcpSetup-${{ needs.version.outputs.version }}-${{ matrix.label }}.*
           if-no-files-found: error
 
-  release:
+      - name: Upload raw payload (linux-arm64)
+        # Qt doesn't publish a native linux-arm64 Installer Framework build, and emulating the
+        # x64 one under qemu needs a full amd64 multiarch rootfs that arm64 Ubuntu's default
+        # (ports.ubuntu.com) mirrors don't reliably carry. binarycreator only archives files —
+        # it never executes the payload — so packaging happens on an x64 runner instead
+        # (package-linux-arm64 below); this step just hands the published payload over.
+        if: matrix.rid == 'linux-arm64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-arm64-payload
+          path: artifacts/linux-arm64
+          if-no-files-found: error
+
+  package-linux-arm64:
     needs: [version, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-arm64-payload
+          path: artifacts/linux-arm64
+
+      - name: Install Linux Qt runtime libraries
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libxkbcommon-x11-0 libxkbcommon0 \
+            libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+            libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 \
+            libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1
+
+      - name: Install Qt Installer Framework
+        shell: bash
+        run: |
+          python3 -m pip install --quiet --upgrade aqtinstall --break-system-packages
+          python3 -m aqt install-tool linux desktop tools_ifw --outputdir .qtifw-tools
+
+      - name: Build installer
+        shell: bash
+        run: |
+          chmod +x installer/qtifw/build-installer.sh
+          installer/qtifw/build-installer.sh "artifacts/linux-arm64" "${{ needs.version.outputs.version }}" "linux-arm64"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SefimMcpSetup-${{ needs.version.outputs.version }}-linux-arm64
+          path: SefimMcpSetup-${{ needs.version.outputs.version }}-linux-arm64.*
+          if-no-files-found: error
+
+  release:
+    needs: [version, build, package-linux-arm64]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:

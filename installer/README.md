@@ -154,7 +154,16 @@ Her matris kolu: sürümü çözer (tag adı, `workflow_dispatch` girişi veya
 `dotnet publish` ile payload'ı üretir, payload'ı doğrular (`*.exe`/`sefim-ai-mcp`,
 `appsettings.json` var mı, `*.md` sızıntısı yok mu, pack varsa şifreli mi), QtIFW
 araçlarını `aqtinstall` ile kurar, `build-installer.sh`'ı çalıştırır ve setup'ı artifact
-olarak yükler. `linux-x64` kolunda ayrıca `dotnet test` çalışır. Son `release` job'u,
+olarak yükler. `linux-x64` kolunda ayrıca `dotnet test` çalışır.
+
+`linux-arm64` kolu farklıdır: Qt, Installer Framework araçlarını linux-arm64 için
+native olarak yayınlamıyor (aqtinstall her zaman x64 ikili dosyasını indiriyor), bu
+yüzden bu kol yalnızca `dotnet publish` ile payload'ı üretip artifact olarak yükler;
+paketleme ayrı bir `package-linux-arm64` job'unda (ubuntu-latest, x64) yapılır —
+binarycreator dosyaları sadece arşivliyor, payload'ın mimarisini çalıştırmıyor, o
+yüzden x64 araçla arm64 payload'ı paketlemek sorunsuzdur.
+
+Son `release` job'u,
 yalnızca `v*` tag push'ında, tüm artifact'leri indirip GitHub Release'e ekler:
 
 ```bash
