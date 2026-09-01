@@ -94,18 +94,29 @@ public static class SetupCommandRunner
         var userId = GetOption(args, "--user-id");
         var password = GetOption(args, "--password");
         var sefimDir = GetOption(args, "--sefim-dir");
+        if (string.IsNullOrWhiteSpace(sefimDir))
+            sefimDir = SefimDetection.FindSefimDirectory();
+
+        var serverProvided = !string.IsNullOrWhiteSpace(server);
+        var databaseProvided = !string.IsNullOrWhiteSpace(database);
 
         // The wizard collects the connection fields as plain text (no pre-install process
         // execution is possible), so 'setup detect' never runs before this point. Fall back to
         // reading Şefim's own connectionstring.txt for whatever the caller left blank.
-        if ((string.IsNullOrWhiteSpace(server) || string.IsNullOrWhiteSpace(database))
-            && !string.IsNullOrWhiteSpace(sefimDir))
+        if ((!serverProvided || !databaseProvided) && !string.IsNullOrWhiteSpace(sefimDir))
         {
             var detected = SefimDetection.ReadConnectionString(sefimDir);
-            if (string.IsNullOrWhiteSpace(server)) server = detected.Server;
-            if (string.IsNullOrWhiteSpace(database)) database = detected.Database;
-            if (string.IsNullOrWhiteSpace(userId)) userId = detected.UserId;
-            if (string.IsNullOrWhiteSpace(password)) password = detected.Password;
+            if (!serverProvided) server = detected.Server;
+            if (!databaseProvided) database = detected.Database;
+
+            // Only borrow credentials when the caller supplied neither server nor database.
+            // If either was actually typed in, blank user/password is a deliberate
+            // Integrated Security choice, not an oversight to fill in from Şefim's own file.
+            if (!serverProvided && !databaseProvided)
+            {
+                if (string.IsNullOrWhiteSpace(userId)) userId = detected.UserId;
+                if (string.IsNullOrWhiteSpace(password)) password = detected.Password;
+            }
         }
 
         if (string.IsNullOrWhiteSpace(server) || string.IsNullOrWhiteSpace(database))
@@ -173,28 +184,41 @@ public static class SetupCommandRunner
 
     private static void RunRemove(string[] args)
     {
-        var serverKey = GetOption(args, "--server-key") ?? "sefim";
-        var host = GetOption(args, "--host");
-
-        foreach (var (name, path) in new[]
-                 {
-                     ("claude", SetupPaths.ClaudeConfigPath()),
-                     ("chatgpt", SetupPaths.ChatGptConfigPath()),
-                 })
+        // Reached only via installscript.qs's UNDOEXECUTE clause, whose undo command has no
+        // {0,1} exit-code tolerance (that token only applies to the perform side). A nonzero
+        // exit here fails the uninstall operation itself, so any failure is reported as a
+        // warning rather than propagated — cleaning up the client config is best-effort, not a
+        // condition for the extracted files being removed.
+        try
         {
-            if (host is not null && host != name) continue;
-            if (path is not null && ClientConfigWriter.RemoveJsonHost(path, serverKey))
-                WritePair("cleaned", path);
-        }
+            var serverKey = GetOption(args, "--server-key") ?? "sefim";
+            var host = GetOption(args, "--host");
 
-        if (host is null || host == "chatgpt")
+            foreach (var (name, path) in new[]
+                     {
+                         ("claude", SetupPaths.ClaudeConfigPath()),
+                         ("chatgpt", SetupPaths.ChatGptConfigPath()),
+                     })
+            {
+                if (host is not null && host != name) continue;
+                if (path is not null && ClientConfigWriter.RemoveJsonHost(path, serverKey))
+                    WritePair("cleaned", path);
+            }
+
+            if (host is null || host == "chatgpt")
+            {
+                var codexPath = SetupPaths.CodexConfigPath();
+                if (File.Exists(codexPath))
+                    ClientConfigWriter.UpdateCodexToml(codexPath, serverKey, exePath: "", toolProfile: "", remove: true);
+            }
+
+            WritePair("status", "ok");
+        }
+        catch (Exception ex)
         {
-            var codexPath = SetupPaths.CodexConfigPath();
-            if (File.Exists(codexPath))
-                ClientConfigWriter.UpdateCodexToml(codexPath, serverKey, exePath: "", toolProfile: "", remove: true);
+            WritePair("status", "warning");
+            WritePair("message", ex.Message);
         }
-
-        WritePair("status", "ok");
     }
 
     private static void Fail(string message)

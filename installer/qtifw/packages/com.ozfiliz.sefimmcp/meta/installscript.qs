@@ -123,8 +123,10 @@ Component.prototype.createOperations = function()
     //
     // The UNDOEXECUTE clause is part of the SAME operation: at uninstall time QtIFW runs the
     // command after the separator token, which strips the MCP entry from the client config
-    // before the extracted binary is deleted. The leading "{0,1}" exit-code tolerance applies
-    // to both directions, so a failed cleanup never blocks the uninstall.
+    // before the extracted binary is deleted. The leading "{0,1}" tolerance only covers the
+    // perform side (QtIFW splits arguments() at UNDOEXECUTE, and the undo half falls back to
+    // requiring exit 0), so "setup remove" is written to always exit 0 itself — a failed
+    // cleanup is logged as a warning rather than ever failing the uninstall operation.
     component.addOperation("Execute", ["{0,1}"].concat(args).concat([
         "UNDOEXECUTE",
         "@TargetDir@/" + exeName, "setup", "remove",
