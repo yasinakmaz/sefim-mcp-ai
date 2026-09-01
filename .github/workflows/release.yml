@@ -65,7 +65,7 @@ jobs:
           - os: ubuntu-24.04-arm
             rid: linux-arm64
             label: linux-arm64
-          - os: macos-15-large
+          - os: macos-15-intel
             rid: osx-x64
             label: macos-x64
           - os: macos-15
@@ -121,11 +121,22 @@ jobs:
           # binarycreator links against Qt's X11/xkb platform plugin at load time even when
           # QT_QPA_PLATFORM=offscreen is set at runtime — ubuntu-latest/-arm runners don't ship
           # these by default, which fails with "libxkbcommon-x11.so.0: cannot open shared object
-          # file". Confirmed via https://bugreports.qt.io/browse/QTIFW-2119 and the Qt forums.
+          # file" (then, once that's installed, the same for libxcb-shape.so.0 and friends).
+          # Confirmed via https://bugreports.qt.io/browse/QTIFW-2119 and the Qt forums.
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libxkbcommon-x11-0 libxcb-cursor0 \
-            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
-            libxcb-xinerama0 libxcb-xfixes0
+          sudo apt-get install -y --no-install-recommends libxkbcommon-x11-0 libxkbcommon0 \
+            libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+            libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 \
+            libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1
+
+      - name: Install x86-64 emulation
+        # Qt only publishes an x64 build of the Installer Framework tools for the generic
+        # "linux" aqtinstall host — there is no native linux-arm64 binarycreator. qemu-user-static
+        # registers a binfmt_misc handler so the x64 binary runs transparently under emulation.
+        if: runner.os == 'Linux' && runner.arch == 'ARM64'
+        shell: bash
+        run: |
+          sudo apt-get install -y --no-install-recommends qemu-user-static
 
       - name: Install Qt Installer Framework
         shell: bash

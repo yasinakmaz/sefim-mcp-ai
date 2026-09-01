@@ -146,7 +146,7 @@ payload üretilebilir; aksi halde `dotnet publish` bunu reddeder.
 | windows-latest | win-arm64 | win-arm64 |
 | ubuntu-latest | linux-x64 | linux-x64 |
 | ubuntu-24.04-arm | linux-arm64 | linux-arm64 |
-| macos-15-large | osx-x64 | macos-x64 |
+| macos-15-intel | osx-x64 | macos-x64 |
 | macos-15 | osx-arm64 | macos-arm64 |
 
 Her matris kolu: sürümü çözer (tag adı, `workflow_dispatch` girişi veya
