@@ -7,7 +7,10 @@
     <ProductUrl>https://github.com/yasinakmaz/sefim-mcp-ai</ProductUrl>
     <InstallerApplicationIcon>../assets/installer</InstallerApplicationIcon>
     <InstallerWindowIcon>../assets/installer.png</InstallerWindowIcon>
-    <Logo>../assets/logo.png</Logo>
+    <Logo>../assets/header.png</Logo>
+    <Watermark>../assets/welcome.png</Watermark>
+    <StyleSheet>../assets/nsis.qss</StyleSheet>
+    <ControlScript>controlscript.qs</ControlScript>
     <!-- Per-user install: no admin/root elevation requested on any platform. -->
     <TargetDir>@ApplicationsDirUser@/SefimMcp/@ProductVersion@</TargetDir>
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
@@ -18,4 +21,10 @@
     <StartMenuDir>Şefim MCP Server</StartMenuDir>
     <MaintenanceToolName>SefimMcpUninstall</MaintenanceToolName>
     <WizardStyle>Modern</WizardStyle>
+    <WizardShowPageList>false</WizardShowPageList>
+    <WizardDefaultWidth>503</WizardDefaultWidth>
+    <WizardDefaultHeight>390</WizardDefaultHeight>
+    <WizardMinimumWidth>503</WizardMinimumWidth>
+    <WizardMinimumHeight>390</WizardMinimumHeight>
+    <TitleColor>#0A1A2F</TitleColor>
 </Installer>

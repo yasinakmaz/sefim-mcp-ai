@@ -5,10 +5,11 @@ Reuses the visual identity from the original NSIS installer (installer/assets/ge
 same color palette, typography, and Şefim branding.
 
 Outputs PNG/ICO/ICNS formats expected by config.xml:
+  welcome.png    164x314   welcome and finish page side banner
+  header.png     150x57    inner page header logo
   installer.png  256x256   window icon
   installer.ico  multi     Windows icon (16/32/48/256)
   installer.icns multi     macOS icon
-  logo.png       various   wizard/welcome logo image
 
 Run from the repository root:
     python3 installer/qtifw/assets/generate-assets.py
@@ -161,13 +162,12 @@ def build_installer_icns() -> None:
         print(f"    → On macOS, run: iconutil -c icns -o installer.icns installer_1024.png")
 
 
-def build_logo_png() -> None:
-    """Build logo.png: wizard/welcome logo image.
+def build_welcome_png() -> None:
+    """Build welcome.png: NSIS MUI welcome/finish side banner.
 
     Reuses the welcome image design from the original NSIS installer:
     vertical gradient background with the Şefim mark and product text.
     """
-    # Wizard logo size (common for Qt installers)
     width, height = 164, 314
 
     image = diagonal_sheen(vertical_gradient((width, height), DEEP, (18, 62, 112)))
@@ -188,13 +188,32 @@ def build_logo_png() -> None:
     draw.text((width // 2, int(height * 0.75)), "Şefim POS entegrasyonu", font=footer, fill=LIGHT, anchor="mm")
     draw.text((width // 2, int(height * 0.93)), "OZFİLİZ YAZILIM", font=footer, fill=(150, 180, 220), anchor="mm")
 
+    image.save(os.path.join(HERE, "welcome.png"), "PNG")
+    # Backward-compatible name while config migrates to welcome.png.
     image.save(os.path.join(HERE, "logo.png"), "PNG")
-    print(f"  logo.png (164x314, wizard banner)")
+    print("  welcome.png (164x314, NSIS side banner)")
+
+
+def build_header_png() -> None:
+    """Build header.png: NSIS MUI inner-page header image."""
+    width, height = 150, 57
+    image = Image.new("RGB", (width, height), WHITE)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle([0, 0, 5, height], fill=ACCENT)
+
+    mark(draw, 28, 28, 15, 4)
+
+    draw.text((50, 20), "ŞEFİM MCP", font=font(FONT_BOLD, 12), fill=DEEP, anchor="lm")
+    draw.text((50, 36), "OZFİLİZ YAZILIM", font=font(FONT_REGULAR, 8), fill=(90, 110, 135), anchor="lm")
+
+    image.save(os.path.join(HERE, "header.png"), "PNG")
+    print("  header.png (150x57, NSIS header)")
 
 
 if __name__ == "__main__":
     print("Generating QtIFW installer assets...")
-    build_logo_png()
+    build_welcome_png()
+    build_header_png()
     build_installer_png()
     build_installer_ico()
     build_installer_icns()

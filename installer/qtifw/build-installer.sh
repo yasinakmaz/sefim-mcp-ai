@@ -2,7 +2,7 @@
 # Builds a QtIFW installer from an already-published, single-RID payload.
 #
 # Usage:
-#   installer/qtifw/build-installer.sh <payload-dir> <version> <os-arch-label>
+#   installer/qtifw/build-installer.sh <payload-dir> <version> <os-arch-label> [output-dir]
 #
 # Example:
 #   installer/qtifw/build-installer.sh artifacts/linux-x64 0.1.0-beta linux-x64
@@ -17,6 +17,7 @@ qtifw_dir="$repo_root/installer/qtifw"
 payload_dir="$1"
 version="$2"
 label="$3"
+output_dir="${4:-$repo_root}"
 
 if [[ ! -f "$payload_dir/sefim-ai-mcp" && ! -f "$payload_dir/sefim-ai-mcp.exe" ]]; then
     echo "Payload not found under $payload_dir (expected sefim-ai-mcp or sefim-ai-mcp.exe)" >&2
@@ -25,20 +26,46 @@ fi
 
 # --- 1. Ensure binarycreator is available -----------------------------------
 tools_dir="$repo_root/.qtifw-tools"
-if ! command -v binarycreator >/dev/null 2>&1 && [[ ! -x "$tools_dir/bin/binarycreator" && ! -x "$tools_dir/bin/binarycreator.exe" ]]; then
+find_binarycreator() {
+    if command -v binarycreator >/dev/null 2>&1; then
+        command -v binarycreator
+        return
+    fi
+
+    find "$tools_dir" -iname 'binarycreator*' -type f 2>/dev/null | head -1
+}
+
+install_qtifw() {
     echo "Installing Qt Installer Framework via aqtinstall..."
-    python3 -m pip install --quiet --upgrade aqtinstall
+    aqt_python="python3"
+    if python3 -m pip --version >/dev/null 2>&1; then
+        python3 -m pip install --quiet --upgrade aqtinstall
+    else
+        aqt_venv="$tools_dir/.aqt-venv"
+        python3 -m venv "$aqt_venv"
+        aqt_python="$aqt_venv/bin/python"
+        if [[ ! -x "$aqt_python" && -x "$aqt_venv/Scripts/python.exe" ]]; then
+            aqt_python="$aqt_venv/Scripts/python.exe"
+        fi
+        "$aqt_python" -m pip install --quiet --upgrade pip aqtinstall
+    fi
+
     case "$(uname -s)" in
         Linux*)  host=linux ;;
         Darwin*) host=mac ;;
         *)       host=windows ;;
     esac
-    python3 -m aqt install-tool "$host" desktop tools_ifw --outputdir "$tools_dir"
-fi
+    "$aqt_python" -m aqt install-tool "$host" desktop tools_ifw --outputdir "$tools_dir"
+}
 
-bc="binarycreator"
-if ! command -v binarycreator >/dev/null 2>&1; then
-    bc="$(find "$tools_dir" -iname 'binarycreator*' -type f | head -1)"
+bc="$(find_binarycreator)"
+if [[ -z "$bc" ]]; then
+    install_qtifw
+    bc="$(find_binarycreator)"
+fi
+if [[ -z "$bc" || ! -x "$bc" ]]; then
+    echo "binarycreator not found after QtIFW installation." >&2
+    exit 1
 fi
 
 # --- 2. Stamp version into package.xml / config.xml --------------------------
@@ -59,7 +86,8 @@ cp -r "$payload_dir"/. "$data_dir/"
 
 # Knowledge is only ever shipped as the encrypted knowledge.pack; refuse to package
 # plaintext markdown, mirroring the check the old windows-installer.yml workflow ran.
-if [ -n "$(find "$data_dir" -iname '*.md' -print -quit)" ]; then
+plaintext_knowledge="$(find "$data_dir" -iname '*.md' | head -1)"
+if [[ -n "$plaintext_knowledge" ]]; then
     echo "Refusing to package plaintext knowledge (*.md found under payload)." >&2
     find "$data_dir" -iname '*.md' >&2
     exit 1
@@ -71,7 +99,8 @@ case "$(uname -s)" in
     Darwin*) ext="app" ;;
     *)       ext="exe" ;;
 esac
-output="$repo_root/SefimMcpSetup-${version}-${label}.${ext}"
+mkdir -p "$output_dir"
+output="$output_dir/SefimMcpSetup-${version}-${label}.${ext}"
 
 "$bc" --offline-only -c "$work_dir/config/config.xml" -p "$work_dir/packages" "$output"
 

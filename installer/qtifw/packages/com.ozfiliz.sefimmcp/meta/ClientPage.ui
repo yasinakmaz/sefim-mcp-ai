@@ -2,9 +2,34 @@
 <ui version="4.0">
  <class>ClientPage</class>
  <widget class="QWidget" name="ClientPage">
-  <layout class="QVBoxLayout">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>491</width>
+    <height>190</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>491</width>
+    <height>190</height>
+   </size>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
+   <property name="spacing"><number>6</number></property>
    <item>
     <widget class="QLabel" name="introLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>42</height>
+      </size>
+     </property>
      <property name="text">
       <string>Sunucu, seçtiğiniz uygulamanın yapılandırma dosyasına eklenir. Dosyadaki diğer sunucular ve ayarlar korunur.</string>
      </property>
@@ -12,24 +37,68 @@
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="claudeRadio">
-     <property name="text"><string>Claude Desktop kullan</string></property>
-     <property name="checked"><bool>true</bool></property>
+    <widget class="QGroupBox" name="claudeGroup">
+     <property name="title"><string>  Claude Desktop  </string></property>
+     <layout class="QVBoxLayout" name="claudeLayout">
+      <property name="leftMargin"><number>8</number></property>
+      <property name="topMargin"><number>10</number></property>
+      <property name="rightMargin"><number>8</number></property>
+      <property name="bottomMargin"><number>6</number></property>
+      <property name="spacing"><number>2</number></property>
+      <item>
+       <widget class="QRadioButton" name="claudeRadio">
+        <property name="font">
+         <font><weight>75</weight><bold>true</bold></font>
+        </property>
+        <property name="text"><string>Claude Desktop kullan</string></property>
+        <property name="checked"><bool>true</bool></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="claudeStateLabel">
+        <property name="text"><string>Kurulu görünmüyor; kayıt yine de eklenir.</string></property>
+        <property name="wordWrap"><bool>true</bool></property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="chatgptRadio">
-     <property name="text"><string>ChatGPT Desktop kullan</string></property>
+    <widget class="QGroupBox" name="chatgptGroup">
+     <property name="title"><string>  ChatGPT Desktop  </string></property>
+     <layout class="QVBoxLayout" name="chatgptLayout">
+      <property name="leftMargin"><number>8</number></property>
+      <property name="topMargin"><number>10</number></property>
+      <property name="rightMargin"><number>8</number></property>
+      <property name="bottomMargin"><number>6</number></property>
+      <property name="spacing"><number>2</number></property>
+      <item>
+       <widget class="QRadioButton" name="chatgptRadio">
+        <property name="font">
+         <font><weight>75</weight><bold>true</bold></font>
+        </property>
+        <property name="text"><string>ChatGPT Desktop kullan</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="chatgptStateLabel">
+        <property name="text"><string>Kurulu görünmüyor; kayıt yine de eklenir.</string></property>
+        <property name="wordWrap"><bool>true</bool></property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="noteLabel">
      <property name="text">
-      <string>Not: Değişikliğin etkili olması için kurulum bittikten sonra seçtiğiniz uygulamayı tamamen kapatıp yeniden açın.</string>
+      <string>Not: Yapılandırma değişikliğinin etkili olması için kurulum bittikten sonra seçtiğiniz uygulamayı tamamen kapatıp yeniden açın.</string>
      </property>
      <property name="wordWrap"><bool>true</bool></property>
     </widget>
    </item>
   </layout>
  </widget>
+ <resources/>
+ <connections/>
 </ui>

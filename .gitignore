@@ -501,6 +501,7 @@ installer/*.exe
 # QtIFW installer build artifacts
 /.qtifw-tools/
 /artifacts/
+/PUBLISH/
 /SefimMcpSetup-*
 installer/qtifw/packages/com.ozfiliz.sefimmcp/data/
 
