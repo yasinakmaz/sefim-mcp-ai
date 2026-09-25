@@ -1,12 +1,11 @@
+using Payment = SefimMcp.Repository.Payment;
+
 var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
 {
     Args = args,
     ContentRootPath = AppContext.BaseDirectory
 });
 
-// Credentials stay out of source control: the tracked appsettings.json ships with an
-// empty connection string, the installer writes the real one, and a developer keeps
-// theirs in appsettings.Local.json, which is git-ignored and never published.
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false);
 
 if (await KnowledgeCommandRunner.TryRunAsync(args, builder.Configuration, CancellationToken.None))
@@ -23,7 +22,6 @@ try
 }
 catch (Exception exception)
 {
-    // An MCP host surfaces stderr but not a stack trace, so a startup misconfiguration has to explain itself.
     await Console.Error.WriteLineAsync(
         $"Şefim MCP server cannot start: {exception.Message}\n" +
         "Set SqlService:ConnectionString in appsettings.json and keep that file next to the executable.");
@@ -63,11 +61,13 @@ builder.Services.AddSingleton<IReport, Report>();
 
 builder.Services.AddSingleton<Report>();
 
+builder.Services.AddSingleton<IPayment, Payment>();
+
+builder.Services.AddSingleton<Payment>();
+
 var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions(
     SefimMcp.Json.AppJsonSerializerContext.Default.Options);
 
-// The full domain surface is large. Every tool definition is sent on every request, so a host that only needs
-// answers and reports can start the server in the "core" profile and keep the model's context for the task.
 var toolProfile = (Environment.GetEnvironmentVariable("SEFIM_TOOL_PROFILE")
                    ?? builder.Configuration["Mcp:ToolProfile"]
                    ?? "full").Trim();
@@ -97,8 +97,6 @@ if (!coreProfile)
 
 var host = builder.Build();
 
-// A pack that fails to load leaves every knowledge tool answering "not documented", which is hard to
-// diagnose from the client side, so the state is reported once at startup.
 var knowledgeStatus = await host.Services.GetRequiredService<IKnowledgeService>().GetStatusAsync(CancellationToken.None);
 await Console.Error.WriteLineAsync(knowledgeStatus.Problem is not null
     ? $"Şefim knowledge pack is unavailable: {knowledgeStatus.Problem}"

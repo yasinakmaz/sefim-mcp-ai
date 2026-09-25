@@ -50,10 +50,10 @@ public class Report(
         report.FreeItems = await ReadResultSetAsync<PaidBill>(reader, cancellationToken);
 
         await MoveNextResultSetAsync(reader, cancellationToken);
-        report.DebitPayments = await ReadResultSetAsync<Payment>(reader, cancellationToken);
+        report.DebitPayments = await ReadResultSetAsync<Models.Payment>(reader, cancellationToken);
 
         await MoveNextResultSetAsync(reader, cancellationToken);
-        report.DiscountedPayments = await ReadResultSetAsync<Payment>(reader, cancellationToken);
+        report.DiscountedPayments = await ReadResultSetAsync<Models.Payment>(reader, cancellationToken);
 
         await MoveNextResultSetAsync(reader, cancellationToken);
         report.DirectTransactions = await ReadResultSetAsync<DirectTransaction>(reader, cancellationToken);
@@ -109,7 +109,7 @@ public class Report(
 
         var report = new RevenueSummaryReport
         {
-            Payments = await ReadResultSetAsync<Payment>(reader, cancellationToken)
+            Payments = await ReadResultSetAsync<Models.Payment>(reader, cancellationToken)
         };
 
         await MoveNextResultSetAsync(reader, cancellationToken);
@@ -137,7 +137,7 @@ public class Report(
 
         var report = new TableRevenueReport
         {
-            Payments = await ReadResultSetAsync<Payment>(reader, cancellationToken)
+            Payments = await ReadResultSetAsync<Models.Payment>(reader, cancellationToken)
         };
 
         await MoveNextResultSetAsync(reader, cancellationToken);
@@ -165,7 +165,7 @@ public class Report(
 
         var report = new PersonnelCollectionReport
         {
-            Payments = await ReadResultSetAsync<Payment>(reader, cancellationToken)
+            Payments = await ReadResultSetAsync<Models.Payment>(reader, cancellationToken)
         };
 
         await MoveNextResultSetAsync(reader, cancellationToken);
@@ -193,7 +193,7 @@ public class Report(
 
         var report = new ActivityReport
         {
-            Payments = await ReadResultSetAsync<Payment>(reader, cancellationToken)
+            Payments = await ReadResultSetAsync<Models.Payment>(reader, cancellationToken)
         };
 
         await MoveNextResultSetAsync(reader, cancellationToken);

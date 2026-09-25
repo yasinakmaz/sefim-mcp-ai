@@ -20,6 +20,7 @@ public class BillWithHeader
 
     public string? TableGroupId { get; set; }
 
+    [PrimaryKey (IsIdentity = true)]
     public int Id { get; set; }
 
     public DateTime Date { get; set; }

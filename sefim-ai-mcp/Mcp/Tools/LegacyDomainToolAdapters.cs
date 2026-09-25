@@ -1,9 +1,5 @@
-using ModelContextProtocol.Server;
-
 namespace SefimMcp.Mcp.Tools;
 
-// These adapters preserve existing MCP tool names while keeping the registered
-// MCP surface separate from repository implementation types.
 [McpServerToolType]
 public sealed class StockMcpTools(
     IConfiguration configuration,
